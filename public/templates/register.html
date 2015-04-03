@@ -1,0 +1,56 @@
+<div class="page-header">
+    <h1>Viajes <small>Registrate</small></h1>
+</div>
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="well">
+            <div ng-show="error.message" class="alert alert-danger">{{ error.message }}</div>
+            <form name="formElement" class="form" ng-submit="register()">
+                <div class="form-group">
+                    <label for="username">Nombre</label>
+                    <input type="text"
+                           class="form-control"
+                           id="username"
+                           name="username"
+                           ng-model="user.username"
+                           ng-required>
+                    <span class="error" ng-show="formElement.username.$dirty && formElement.username.$invalid">
+                        <span ng-show="formElement.username.$error.required">
+                            Campo requerido
+                        </span>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password"
+                           class="form-control"
+                           id="password"
+                           name="password"
+                           ng-model="user.password"
+                           ng-required>
+                    <span class="error" ng-show="formElement.password.$dirty && formElement.password.$invalid">
+                        <span ng-show="formElement.password.$error.required">
+                            Campo requerido
+                        </span>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label for="confirm">Confirmar contraseña</label>
+                    <input type="password"
+                           class="form-control"
+                           id="confirm"
+                           name="confirm"
+                           ng-model="confirm"
+                           ng-required>
+                    <span class="error" ng-show="formElement.confirm.$dirty && formElement.confirm.$invalid">
+                        <span ng-show="formElement.confirm.$error.required">
+                            Campo requerido
+                        </span>
+                    </span>
+                </div>
+                <button type="submit" class="btn btn-primary">Registrarme</button>
+            </form>
+        </div>
+    </div>
+</div>

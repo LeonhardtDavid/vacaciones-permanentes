@@ -1,0 +1,28 @@
+body {
+    padding-top: 25px;
+}
+
+a, .row > .pointer {
+    cursor: pointer;
+}
+
+a.navbar-brand {
+    cursor: default;
+}
+
+.navbar-inverse .navbar-brand {
+    color: #FFFFFF;
+}
+
+span.error {
+.label;
+.label-danger;
+}
+
+.row-striped > div.row:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.selected {
+    background-color: #30B1FF;
+}
