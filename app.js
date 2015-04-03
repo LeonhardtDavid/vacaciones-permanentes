@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var lessMiddleware = require('less-middleware');
 
 var winston = require('winston');
 var expressWinston = require('express-winston');
@@ -30,6 +31,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
+app.use(lessMiddleware(path.join(__dirname, 'public'), { render : { compress : true } }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use("/components", express.static(path.join(__dirname, 'bower_components')));
 app.use(passport.initialize());

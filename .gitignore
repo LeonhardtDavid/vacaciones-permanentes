@@ -32,3 +32,6 @@ bower_components
 
 # idea - WebStorm
 .idea
+
+# Generated css from less files
+/public/stylesheets/style*.css
