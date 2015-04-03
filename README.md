@@ -5,3 +5,10 @@ Trabajo práctico cuatrimestral de la materia [Práctica del Desarrollo de Softw
 [Universidad Nacional de Quilmes (UNQ)](http://www.unq.edu.ar/)
 
 1° cuatrimestre 2015
+
+Para ejecutarlo por primera vez:
+--------------------------------
+
+`npm install`  
+`bower install`  
+`npm start`
