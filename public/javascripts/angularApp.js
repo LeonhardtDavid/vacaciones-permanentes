@@ -53,9 +53,9 @@ app.controller('AuthCtrl', [
 app.factory('authInterceptor', [
     '$q',
     '$window',
-    '$location',
+    '$injector',
     'authToken',
-    function ($q, $window, $location, authToken) {
+    function ($q, $window, $injector, authToken) {
         return {
             request: function (config) {
                 config.headers = config.headers || {};
@@ -72,7 +72,10 @@ app.factory('authInterceptor', [
                 if (rejection.status === 401) {
                     // handle the case where the user is not authenticated
                     authToken.logOut();
-                    $location.path('/login');
+
+                    // use $injector to get $state to avoid circular dependency
+                    var stateService = $injector.get('$state');
+                    stateService.go('login');
                 }
                 return $q.reject(rejection); // use only promise api here, or all would be a success
             }
@@ -211,16 +214,17 @@ app.config([
 
 app.run([
     '$rootScope',
-    '$location',
+    '$state',
     'authToken',
-    function ($rootScope, $location, authToken) {
+    function ($rootScope, $state, authToken) {
 
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
 
             var token = authToken.getToken();
 
             if (token == null && toState.name != 'login') {
-                $location.path('/login');
+                $state.go('login');
+                event.preventDefault();
             }
 
         });
