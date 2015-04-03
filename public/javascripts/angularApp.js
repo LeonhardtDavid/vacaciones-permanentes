@@ -104,8 +104,9 @@ app.factory('authToken', [
 app.factory('auth', [
     '$http',
     '$window',
+    '$state',
     'authToken',
-    function ($http, $window, authToken) {
+    function ($http, $window, $state, authToken) {
         var auth = {};
 
         auth.isLoggedIn = function () {
@@ -143,6 +144,7 @@ app.factory('auth', [
 
         auth.logOut = function () {
             authToken.removeToken();
+            $state.go('login');
         };
 
         return auth;
