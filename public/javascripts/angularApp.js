@@ -221,8 +221,9 @@ app.run([
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
 
             var token = authToken.getToken();
+            var stateName = toState.name;
 
-            if (token == null && toState.name != 'login') {
+            if (token == null && stateName != 'login' && stateName != 'register') {
                 $state.go('login');
                 event.preventDefault();
             }
