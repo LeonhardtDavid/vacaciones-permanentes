@@ -77,6 +77,19 @@
         <h1>Viajes</h1>
     </div>
 
+    <div ng-repeat="viaje in viajes">
+    
+        {{viaje.nombre}}
+        
+    </div>
+
+    <form ng-submit="crearViaje()">
+      <input type="text" placeholder="Nombre" ng-model="nombre"></input>
+      <br>
+      
+      <button type="submit">Crear Viaje</button>
+    </form>
+
 </script>
 
 </body>

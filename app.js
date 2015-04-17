@@ -13,6 +13,11 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 
 require('./models/Users');
+
+require('./models/Viaje');
+//require('./models/Destino');
+//require('./models/Ciudad');
+
 require('./config/passport');
 
 mongoose.connect('mongodb://localhost/vacperm');

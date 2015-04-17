@@ -1,12 +1,22 @@
 var app = angular.module('vacacionesPermanentes', ['ui.router', 'angularMoment']);
 
 app.controller('MainCtrl', [
-    '$scope',
+    '$scope', 'viajes',
     'auth',
-    function ($scope, auth) {
+    function ($scope, viajes, auth) {
 
         $scope.isLoggedIn = auth.isLoggedIn;
+        $scope.viajes = viajes.viajes;
 
+        $scope.crearViaje = function(){
+            if(!$scope.nombre || $scope.nombre == '') {return;}
+
+            viajes.create({
+                nombre: $scope.nombre
+            });
+
+            $scope.nombre = '';
+        };
     }
 ]);
 
@@ -47,6 +57,35 @@ app.controller('AuthCtrl', [
                 $state.go('home');
             });
         };
+    }
+]);
+
+//servicio para viajes
+app.factory('viajes', ['$http', 'authToken', 
+    function($http, authToken){
+        var v = {
+            viajes: []
+        };
+
+        v.getAll = function(){
+            return $http.get('/viajes').success(function(data){
+                angular.copy(data, v.viajes);
+            });
+        };
+
+        v.create = function(viaje){
+            return $http.post('/viaje', viaje, {
+                headers: {Authorization: 'Bearer'+ authToken.getToken()}
+            }).success(function(data){
+                v.viajes.push(data);
+            });
+        };
+
+        v.eliminar = function(viaje){
+
+        };
+
+        return v;
     }
 ]);
 
