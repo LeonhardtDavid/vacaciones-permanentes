@@ -53,25 +53,30 @@ router.post('/login', function (req, res, next) {
     })(req, res, next);
 });
 
-module.exports = router;
-
 /*ABM Viaje*/
 //GET Viaje
-router.get('/viajes', function(req, res, next) {
-    Viaje.find(function(err, viajes){
-        if(err){ return next(err); }
+router.get('/viajes', auth, function (req, res, next) {
+    var username = req.payload.username;
+    Viaje.find({author : username}, function (err, viajes) {
+        if (err) {
+            return next(err);
+        }
         res.json(viajes);
     });
 });
 
 //POST Save viaje
-router.post('/viajes', auth, function(req, res, next) {
-  var viaje = new Viaje(req.body);
-  viaje.author = req.payload.username;
+router.post('/viajes', auth, function (req, res, next) {
+    var viaje = new Viaje(req.body);
+    viaje.author = req.payload.username;
 
-  viaje.save(function(err, viaje){
-    if(err){ return next(err); }
-    res.json(viaje);
-  });
+    viaje.save(function (err, viaje) {
+        if (err) {
+            return next(err);
+        }
+        res.json(viaje);
+    });
 });
+
+module.exports = router;
 

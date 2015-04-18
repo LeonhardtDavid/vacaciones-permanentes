@@ -1,15 +1,18 @@
 var app = angular.module('vacacionesPermanentes', ['ui.router', 'angularMoment']);
 
 app.controller('MainCtrl', [
-    '$scope', 'viajes',
+    '$scope',
+    'viajes',
     'auth',
     function ($scope, viajes, auth) {
 
         $scope.isLoggedIn = auth.isLoggedIn;
         $scope.viajes = viajes.viajes;
 
-        $scope.crearViaje = function(){
-            if(!$scope.nombre || $scope.nombre == '') {return;}
+        $scope.crearViaje = function () {
+            if (!$scope.nombre || $scope.nombre == '') {
+                return;
+            }
 
             viajes.create({
                 nombre: $scope.nombre
@@ -61,27 +64,26 @@ app.controller('AuthCtrl', [
 ]);
 
 //servicio para viajes
-app.factory('viajes', ['$http', 'authToken', 
-    function($http, authToken){
+app.factory('viajes', ['$http',
+    function ($http) {
         var v = {
             viajes: []
         };
 
-        v.getAll = function(){
-            return $http.get('/viajes').success(function(data){
+        v.getAll = function () {
+            return $http.get('/viajes').success(function (data) {
                 angular.copy(data, v.viajes);
             });
         };
 
-        v.create = function(viaje){
-            return $http.post('/viaje', viaje, {
-                headers: {Authorization: 'Bearer'+ authToken.getToken()}
-            }).success(function(data){
-                v.viajes.push(data);
-            });
+        v.create = function (viaje) {
+            return $http.post('/viajes', viaje)
+                .success(function (data) {
+                    v.viajes.push(data);
+                });
         };
 
-        v.eliminar = function(viaje){
+        v.eliminar = function (viaje) {
 
         };
 
@@ -212,9 +214,9 @@ app.config([
                     "detailView": {template: ""}
                 },
                 resolve: {
-                    //postPromise: ['posts', function (posts) {
-                    //    return posts.getAll();
-                    //}]
+                    viajesPromise: ['viajes', function (viajes) {
+                        return viajes.getAll();
+                    }]
                 }
             })
             .state('login', {
