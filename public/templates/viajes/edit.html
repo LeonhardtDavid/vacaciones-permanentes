@@ -1,0 +1,14 @@
+<div class="page-header">
+    <h1>
+        <small ng-if="viaje._id == null">&nbsp;</small>
+        <small ng-if="viaje._id != null">{{viaje.nombre}}</small>
+    </h1>
+</div>
+
+<div id="routes" class="well">
+    <form name="formElement" class="form" ng-submit="actualizarViaje()">
+
+        <ng-include src="'/templates/viajes/form.html'"></ng-include>
+
+    </form>
+</div>

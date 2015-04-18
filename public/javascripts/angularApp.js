@@ -1,24 +1,27 @@
-var app = angular.module('vacacionesPermanentes', ['ui.router', 'angularMoment']);
+var app = angular.module('vacacionesPermanentes', ['ui.router', 'ui.bootstrap', 'angularMoment']);
 
-app.controller('MainCtrl', [
+app.controller('ViajesCtrl', [
     '$scope',
+    '$state',
     'viajes',
     'auth',
-    function ($scope, viajes, auth) {
+    function ($scope, $state, viajes, auth) {
 
         $scope.isLoggedIn = auth.isLoggedIn;
+
         $scope.viajes = viajes.viajes;
+        $scope.viaje  = viajes.viaje;
 
         $scope.crearViaje = function () {
-            if (!$scope.nombre || $scope.nombre == '') {
-                return;
-            }
-
-            viajes.create({
-                nombre: $scope.nombre
+            viajes.create($scope.viaje).then(function (res) {
+                $state.go('viajes', {}, {reload : true});
             });
+        };
 
-            $scope.nombre = '';
+        $scope.actualizarViaje = function () {
+            viajes.update($scope.viaje).then(function (res) {
+                $state.go('viajes', {}, {reload : true});
+            });
         };
     }
 ]);
@@ -46,7 +49,7 @@ app.controller('AuthCtrl', [
                 auth.register($scope.user).error(function (error) {
                     $scope.error = error;
                 }).then(function () {
-                    $state.go('home');
+                    $state.go('viajes');
                 });
             } else {
                 $scope.error.message = "La contraseña no coincide";
@@ -57,7 +60,7 @@ app.controller('AuthCtrl', [
             auth.logIn($scope.user).error(function (error) {
                 $scope.error = error;
             }).then(function () {
-                $state.go('home');
+                $state.go('viajes');
             });
         };
     }
@@ -67,13 +70,23 @@ app.controller('AuthCtrl', [
 app.factory('viajes', ['$http',
     function ($http) {
         var v = {
-            viajes: []
+            viajes: [],
+            viaje: {}
         };
 
         v.getAll = function () {
-            return $http.get('/viajes').success(function (data) {
-                angular.copy(data, v.viajes);
-            });
+            return $http.get('/viajes')
+                .success(function (data) {
+                    angular.copy(data, v.viajes);
+                });
+        };
+
+        v.get = function (id) {
+            if (id == 0) return angular.copy({}, v.viaje);
+            return $http.get('/viajes/' + id)
+                .success(function (data) {
+                    angular.copy(data, v.viaje);
+                });
         };
 
         v.create = function (viaje) {
@@ -83,7 +96,11 @@ app.factory('viajes', ['$http',
                 });
         };
 
-        v.eliminar = function (viaje) {
+        v.update = function (viaje) {
+            return $http.put('/viajes/' + viaje._id, viaje);
+        };
+
+        v.remove = function (viaje) {
 
         };
 
@@ -195,6 +212,18 @@ app.factory('auth', [
     }
 ]);
 
+app.directive('vpOpen', [function () {
+    return {
+        link: function postLink(scope, element, attrs) {
+            element.on('click', function () {
+                var className = 'selected';
+                $('.' + className).removeClass(className);
+                element.addClass(className);
+            });
+        }
+    }
+}]);
+
 app.config([
     '$stateProvider',
     '$urlRouterProvider',
@@ -204,18 +233,46 @@ app.config([
         $httpProvider.interceptors.push('authInterceptor');
 
         $stateProvider
-            .state('home', {
-                url: '/home',
+            .state('viajes', {
+                url: '/viajes',
                 views: {
                     "listView": {
-                        templateUrl: "/home.html",
-                        controller: 'MainCtrl'
+                        templateUrl: "/templates/viajes/list.html",
+                        controller: 'ViajesCtrl'
                     },
                     "detailView": {template: ""}
                 },
                 resolve: {
                     viajesPromise: ['viajes', function (viajes) {
                         return viajes.getAll();
+                    }]
+                }
+            })
+            .state('viajes.nuevo', {
+                url: '/nuevo',
+                views: {
+                    "detailView@": {
+                        templateUrl: "/templates/viajes/new.html",
+                        controller: 'ViajesCtrl'
+                    }
+                },
+                resolve: {
+                    viajePromise: ['viajes', function (viajes) {
+                        return viajes.get(0);
+                    }]
+                }
+            })
+            .state('viajes.edit', {
+                url: '/:id',
+                views: {
+                    "detailView@": {
+                        templateUrl: "/templates/viajes/edit.html",
+                        controller: 'ViajesCtrl'
+                    }
+                },
+                resolve: {
+                    viajePromise: ['viajes', '$stateParams', function (viajes, $stateParams) {
+                        return viajes.get($stateParams.id);
                     }]
                 }
             })
@@ -229,7 +286,7 @@ app.config([
                 },
                 onEnter: ['$state', 'auth', function ($state, auth) {
                     if (auth.isLoggedIn()) {
-                        $state.go('home');
+                        $state.go('viajes');
                     }
                 }]
             })
@@ -243,12 +300,12 @@ app.config([
                 },
                 onEnter: ['$state', 'auth', function ($state, auth) {
                     if (auth.isLoggedIn()) {
-                        $state.go('home');
+                        $state.go('viajes');
                     }
                 }]
             });
 
-        $urlRouterProvider.otherwise('home');
+        $urlRouterProvider.otherwise('viajes');
 
     }
 ]);

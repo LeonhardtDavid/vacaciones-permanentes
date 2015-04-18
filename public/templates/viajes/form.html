@@ -1,0 +1,25 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" class="form-control" autofocus="true" id="nombre" name="nombre"
+                   ng-model="viaje.nombre" required ng-minlength=3>
+        </div>
+        <span class="error" ng-show="formElement.nombre.$dirty && formElement.nombre.$invalid">
+            <span ng-show="formElement.nombre.$error.required">
+                Campo requerido
+            </span>
+            <span ng-show="formElement.path.$error.minlength">
+                Muy corto
+            </span>
+        </span>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-1">
+        <button class="btn btn-success">
+            Guardar
+        </button>
+    </div>
+</div>

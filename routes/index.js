@@ -53,11 +53,11 @@ router.post('/login', function (req, res, next) {
     })(req, res, next);
 });
 
-/*ABM Viaje*/
-//GET Viaje
+/* ABM Viaje */
+// GET Viajes
 router.get('/viajes', auth, function (req, res, next) {
     var username = req.payload.username;
-    Viaje.find({author : username}, function (err, viajes) {
+    Viaje.find({author: username}, function (err, viajes) {
         if (err) {
             return next(err);
         }
@@ -65,7 +65,7 @@ router.get('/viajes', auth, function (req, res, next) {
     });
 });
 
-//POST Save viaje
+// POST Save viaje
 router.post('/viajes', auth, function (req, res, next) {
     var viaje = new Viaje(req.body);
     viaje.author = req.payload.username;
@@ -75,6 +75,48 @@ router.post('/viajes', auth, function (req, res, next) {
             return next(err);
         }
         res.json(viaje);
+    });
+});
+
+// GET Viaje
+router.get('/viajes/:viaje', auth, function (req, res, next) {
+    var username = req.payload.username;
+    var viaje = req.viaje;
+
+    if (viaje.author != username) return next(new Error('no es tuyo'));
+
+    res.json(viaje);
+});
+
+// PUT Viaje (update)
+router.put('/viajes/:viaje', auth, function (req, res, next) {
+    var username = req.payload.username;
+    var viajeDB = req.viaje;
+    var viaje = new Viaje(req.body);
+
+    if (viajeDB.author != username || viajeDB.author != viaje.author) return next(new Error('no es tuyo'));
+
+    viajeDB.update(viaje.toObject(), {}, function (err, numberAffected, viaje) {
+        if (err) {
+            return next(err);
+        }
+        res.json(viaje);
+    });
+});
+
+router.param('viaje', function (req, res, next, id) {
+    var query = Viaje.findById(id);
+
+    query.exec(function (err, viaje) {
+        if (err) {
+            return next(err);
+        }
+        if (!viaje) {
+            return next(new Error('can\'t find viaje'));
+        }
+
+        req.viaje = viaje;
+        return next();
     });
 });
 

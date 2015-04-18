@@ -1,0 +1,33 @@
+<div class="page-header">
+    <h1>Viajes</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <a class="btn btn-info" ui-sref="viajes.nuevo">
+            Nuevo viaje
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        &nbsp;
+    </div>
+</div>
+
+<div class="row-striped">
+
+    <div class="row" ng-repeat="viaje in viajes">
+        <div class="col-md-10 pointer" vp-open tooltip="{{viaje.nombre}}" ui-sref="viajes.edit({ id: viaje._id })">
+            <span>{{viaje.nombre}}</span>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-danger btn-xs">
+                <!--ng-click="open(item.id)">-->
+                Eliminar
+            </button>
+        </div>
+    </div>
+
+</div>
