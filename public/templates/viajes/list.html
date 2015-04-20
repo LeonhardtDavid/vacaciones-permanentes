@@ -19,11 +19,16 @@
 <div class="row-striped">
 
     <div class="row" ng-repeat="viaje in viajes">
-        <div class="col-md-10 pointer" vp-open tooltip="{{viaje.nombre}}" ui-sref="viajes.edit({ id: viaje._id })">
+        <div class="col-md-8 pointer" vp-open tooltip="{{detalles}}" ui-sref="viajes.detalles({ id: viaje._id })">
             <span>{{viaje.nombre}}</span>
         </div>
         <div class="col-md-2">
-            <button class="btn btn-danger btn-xs"
+            <a class="btn btn-info" ui-sref="viajes.edit({ id: viaje._id })">
+                Editar
+            </a>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-danger btn-m"
                     ng-click="open(viaje._id)">
                 Eliminar
             </button>

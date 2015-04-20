@@ -1,24 +1,36 @@
 <div ng-controller="DatepickerDemoCtrl">
+
+    <label for="nombre">Fecha de Arribo</label>
     <div class="row">
         <div class="col-md-6">
             <p class="input-group">
-                <label for="nombre">Fecha de Arribo</label>
-                <input type="text" class="form-control" readonly="true" datepicker-popup='dd.MM.yyyy' ng-model="viaje.fechaDeArribo" is-open="openedArribo" min-date="minDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                <input type="text" id="fechaDeArribo" name="fechaDeArribo" class="form-control" readonly="true" datepicker-popup='dd.MM.yyyy' ng-model="viaje.fechaDeArribo" is-open="openedArribo" min-date="minDate" ng-required="true" datepicker-options="dateOptions" close-text="Close"/>
               
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="open($event, 'openedArribo')"><i class="glyphicon glyphicon-calendar"></i></button>
                 </span>
+                <span class="error" ng-show="formElement.fechaDeArribo.$dirty && formElement.fechaDeArribo.$invalid">
+                    <span ng-show="formElement.fechaDeArribo.$error.required">
+                        Campo requerido
+                    </span>
+                </span>
             </p>
         </div>
     </div>
+
+    <label for="nombre">Fecha de Partida</label>
     <div class="row">
         <div class="col-md-6">
             <p class="input-group">
-                <label for="nombre">Fecha de Partida</label>
-                <input type="text" class="form-control" readonly="true" datepicker-popup='dd.MM.yyyy' ng-model="viaje.fechaDePartida" is-open="openedPartida" min-date="minDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                <input type="text" id="fechaDePartida" name="fechaDePartida" class="form-control" readonly="true" datepicker-popup='dd.MM.yyyy' ng-model="viaje.fechaDePartida" is-open="openedPartida" min-date="minDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
               
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="open($event, 'openedPartida')"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+                <span class="error" ng-show="formElement.fechaDePartida.$dirty && formElement.fechaDePartida.$invalid">
+                    <span ng-show="formElement.fechaDePartida.$error.required">
+                        Campo requerido
+                    </span>
                 </span>
             </p>
         </div>

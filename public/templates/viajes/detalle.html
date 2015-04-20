@@ -1,0 +1,22 @@
+<div class="page-header">
+    <h1>
+        <small ng-if="viaje._id == null">&nbsp;</small>
+        <div class="row">
+            <small ng-if="viaje._id != null">Detalles:</small>           
+        </div>        
+    </h1>
+</div>
+
+<div id="routes" class="well">
+    <form name="formElement" class="form">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>{{viaje.nombre}}</h3>
+            </div>
+            
+            <div class="col-md-12">
+                <div ng-include="'/templates/datepicker.html'"></div>
+            </div>    
+        </div>
+    </form>
+</div>

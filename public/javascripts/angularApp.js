@@ -114,7 +114,7 @@ app.controller('DatepickerDemoCtrl', function ($scope) {
     $scope.today = function() {
         $scope.dt = new Date();
     };
-
+    
     $scope.clear = function () {
         $scope.dt = null;
     };
@@ -123,6 +123,11 @@ app.controller('DatepickerDemoCtrl', function ($scope) {
         $scope.minDate = $scope.minDate ? null : new Date();
     };
     $scope.toggleMin();
+
+    $scope.dateOptions = {
+        formatYear: 'yy',
+        startingDay: 1
+      };
 
     $scope.open = function($event, opened) {
         $event.preventDefault();
@@ -330,6 +335,20 @@ app.config([
                 resolve: {
                     viajePromise: ['viajes', function (viajes) {
                         return viajes.get(0);
+                    }]
+                }
+            })
+            .state('viajes.detalles', {
+                url: '/:id',
+                views: {
+                    "detailView@": {
+                        templateUrl: "/templates/viajes/detalle.html",
+                        controller: 'ViajesCtrl'
+                    }
+                },
+                resolve: {
+                    viajePromise: ['viajes', '$stateParams', function (viajes, $stateParams) {
+                        return viajes.get($stateParams.id);
                     }]
                 }
             })
