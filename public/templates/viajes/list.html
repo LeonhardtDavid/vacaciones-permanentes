@@ -18,8 +18,10 @@
 
 <div class="row-striped">
 
-    <div class="row" ng-repeat="viaje in viajes">
-        <div class="col-md-8 pointer" vp-open tooltip="{{detalles}}" ui-sref="viajes.detalles({ id: viaje._id })">
+    <div class="row" ng-repeat="viaje in viajes | orderBy:'fechaDeArribo'">
+        <div class="col-md-8 pointer" vp-open
+             tooltip-html-unsafe="{{viaje.nombre}}<br> Fecha de arribo: {{viaje.fechaDeArribo | date:'dd.MM.yyyy'}}<br> Fecha de partida: {{viaje.fechaDePartida | date:'dd.MM.yyyy'}}"
+             ui-sref="viajes.detalles({ id: viaje._id })">
             <span>{{viaje.nombre}}</span>
         </div>
         <div class="col-md-2">
