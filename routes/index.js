@@ -104,6 +104,21 @@ router.put('/viajes/:viaje', auth, function (req, res, next) {
     });
 });
 
+// DELETE Viaje (remove)
+router.delete('/viajes/:viaje', auth, function (req, res, next) {
+    var username = req.payload.username;
+    var viaje = req.viaje;
+
+    if (viaje.author != username) return next(new Error('no es tuyo'));
+
+    viaje.remove(function (err) {
+        if (err) {
+            return next(err);
+        }
+        res.json({removed : "ok"});
+    });
+});
+
 router.param('viaje', function (req, res, next, id) {
     var query = Viaje.findById(id);
 

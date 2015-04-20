@@ -23,11 +23,14 @@
             <span>{{viaje.nombre}}</span>
         </div>
         <div class="col-md-2">
-            <button class="btn btn-danger btn-xs">
-                <!--ng-click="open(item.id)">-->
+            <button class="btn btn-danger btn-xs"
+                    ng-click="open(viaje._id)">
                 Eliminar
             </button>
         </div>
     </div>
 
+</div>
+
+<div ng-include="'/templates/modal.html'">
 </div>

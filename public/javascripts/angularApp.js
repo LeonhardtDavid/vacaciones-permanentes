@@ -3,26 +3,52 @@ var app = angular.module('vacacionesPermanentes', ['ui.router', 'ui.bootstrap', 
 app.controller('ViajesCtrl', [
     '$scope',
     '$state',
+    '$modal',
     'viajes',
     'auth',
-    function ($scope, $state, viajes, auth) {
+    function ($scope, $state, $modal, viajes, auth) {
 
         $scope.isLoggedIn = auth.isLoggedIn;
 
         $scope.viajes = viajes.viajes;
-        $scope.viaje  = viajes.viaje;
+        $scope.viaje = viajes.viaje;
 
         $scope.crearViaje = function () {
             viajes.create($scope.viaje).then(function (res) {
-                $state.go('viajes', {}, {reload : true});
+                $state.go('viajes', {}, {reload: true});
             });
         };
 
         $scope.actualizarViaje = function () {
             viajes.update($scope.viaje).then(function (res) {
+                $state.go('viajes', {}, {reload: true});
+            });
+        };
+
+        $scope.open = function (id) {
+
+            var modalInstance = $modal.open({
+                templateUrl: 'myModalContent.html',
+                controller: 'ModalInstanceCtrl',
+                resolve: {
+                    id: function () {
+                        return id;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (text) {
+                $scope.remove(id);
+            });
+
+        };
+
+        $scope.remove = function(id) {
+            viajes.remove(id).then(function (res) {
                 $state.go('viajes', {}, {reload : true});
             });
         };
+
     }
 ]);
 
@@ -66,6 +92,23 @@ app.controller('AuthCtrl', [
     }
 ]);
 
+app.controller('ModalInstanceCtrl', [
+    '$scope',
+    '$modalInstance',
+    'id',
+    function ($scope, $modalInstance) {
+
+        $scope.remove = function () {
+            $modalInstance.close('delete');
+        };
+
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        };
+
+    }
+]);
+
 //servicio para viajes
 app.factory('viajes', ['$http',
     function ($http) {
@@ -100,8 +143,8 @@ app.factory('viajes', ['$http',
             return $http.put('/viajes/' + viaje._id, viaje);
         };
 
-        v.remove = function (viaje) {
-
+        v.remove = function(id) {
+            return $http.delete('/viajes/' + id);
         };
 
         return v;
