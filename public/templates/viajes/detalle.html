@@ -13,10 +13,16 @@
             <div class="col-md-12">
                 <h3>{{viaje.nombre}}</h3>
             </div>
-            
-            <div class="col-md-12">
-                <div ng-include="'/templates/datepicker.html'"></div>
-            </div>    
+
+            <div class="col-md-3">
+                <label for="nombre">Fecha de Arribo</label>
+                <input type="text" class="form-control" readonly="true" datepicker-popup='dd.MM.yyyy' ng-model="viaje.fechaDeArribo"/>
+            </div>       
+
+            <div class="col-md-3">
+                <label for="nombre">Fecha de Partida</label>
+                <input type="text" class="form-control" readonly="true" datepicker-popup='dd.MM.yyyy' ng-model="viaje.fechaDePartida"/>
+            </div>
         </div>
     </form>
 </div>
