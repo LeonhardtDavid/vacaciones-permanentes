@@ -1,0 +1,26 @@
+<div ng-controller="DatepickerDemoCtrl">
+    <div class="row">
+        <div class="col-md-6">
+            <p class="input-group">
+                <label for="nombre">Fecha de Arribo</label>
+                <input type="text" class="form-control" readonly="true" datepicker-popup='dd.MM.yyyy' ng-model="viaje.fechaDeArribo" is-open="openedArribo" min-date="minDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+              
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="open($event, 'openedArribo')"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <p class="input-group">
+                <label for="nombre">Fecha de Partida</label>
+                <input type="text" class="form-control" readonly="true" datepicker-popup='dd.MM.yyyy' ng-model="viaje.fechaDePartida" is-open="openedPartida" min-date="minDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+              
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="open($event, 'openedPartida')"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+            </p>
+        </div>
+    </div>
+</div>

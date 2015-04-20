@@ -109,6 +109,34 @@ app.controller('ModalInstanceCtrl', [
     }
 ]);
 
+
+app.controller('DatepickerDemoCtrl', function ($scope) {
+    $scope.today = function() {
+        $scope.dt = new Date();
+    };
+
+    $scope.clear = function () {
+        $scope.dt = null;
+    };
+
+    $scope.toggleMin = function() {
+        $scope.minDate = $scope.minDate ? null : new Date();
+    };
+    $scope.toggleMin();
+
+    $scope.open = function($event, opened) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope[opened] = true;
+        //$scope.opened = true;
+    };
+
+    $scope.dateOptions = {
+        formatYear: 'mm',
+        startingDay: 3
+    };
+});
+
 //servicio para viajes
 app.factory('viajes', ['$http',
     function ($http) {
