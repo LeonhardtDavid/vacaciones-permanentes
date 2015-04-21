@@ -10,6 +10,15 @@ var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
 
 var router = express.Router();
 
+var verifyAuthor = function (req, res, next) {
+    var username = req.payload.username;
+    var viaje = req.viaje;
+
+    if (viaje.author != username) return next(new Error('no es tuyo'));
+
+    return next();
+};
+
 /* GET home page. */
 router.get('/', function (req, res, next) {
     res.render('index', {title: 'Express'});
@@ -79,22 +88,16 @@ router.post('/viajes', auth, function (req, res, next) {
 });
 
 // GET Viaje
-router.get('/viajes/:viaje', auth, function (req, res, next) {
-    var username = req.payload.username;
-    var viaje = req.viaje;
-
-    if (viaje.author != username) return next(new Error('no es tuyo'));
-
-    res.json(viaje);
+router.get('/viajes/:viaje', auth, verifyAuthor, function (req, res, next) {
+    res.json(req.viaje);
 });
 
 // PUT Viaje (update)
-router.put('/viajes/:viaje', auth, function (req, res, next) {
-    var username = req.payload.username;
+router.put('/viajes/:viaje', auth, verifyAuthor, function (req, res, next) {
     var viajeDB = req.viaje;
     var viaje = new Viaje(req.body);
 
-    if (viajeDB.author != username || viajeDB.author != viaje.author) return next(new Error('no es tuyo'));
+    if (viajeDB.author != viaje.author) return next(new Error('no es tuyo'));
 
     viajeDB.update(viaje.toObject(), {}, function (err, numberAffected, viaje) {
         if (err) {
@@ -105,11 +108,8 @@ router.put('/viajes/:viaje', auth, function (req, res, next) {
 });
 
 // DELETE Viaje (remove)
-router.delete('/viajes/:viaje', auth, function (req, res, next) {
-    var username = req.payload.username;
+router.delete('/viajes/:viaje', auth, verifyAuthor, function (req, res, next) {
     var viaje = req.viaje;
-
-    if (viaje.author != username) return next(new Error('no es tuyo'));
 
     viaje.remove(function (err) {
         if (err) {
