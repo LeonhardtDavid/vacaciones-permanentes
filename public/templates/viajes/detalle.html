@@ -1,9 +1,6 @@
 <div class="page-header">
     <h1>
-        <small ng-if="viaje._id == null">&nbsp;</small>
-        <div class="row">
-            <small ng-if="viaje._id != null">Detalles:</small>           
-        </div>        
+        <small>Detalle:</small>
     </h1>
 </div>
 
@@ -13,15 +10,21 @@
             <div class="col-md-12">
                 <h3>{{viaje.nombre}}</h3>
             </div>
+        </div>
 
-            <div class="col-md-3">
-                <label for="nombre">Fecha de Arribo</label>
-                <input type="text" class="form-control" readonly="true" datepicker-popup='dd.MM.yyyy' ng-model="viaje.fechaDeArribo"/>
-            </div>       
+        <div class="row">
+            <div class="col-md-6">
+                <span>
+                    <strong>Fecha de Arribo:</strong>
+                    {{viaje.fechaDeArribo | date:'dd.MM.yyyy'}}
+                </span>
+            </div>
 
-            <div class="col-md-3">
-                <label for="nombre">Fecha de Partida</label>
-                <input type="text" class="form-control" readonly="true" datepicker-popup='dd.MM.yyyy' ng-model="viaje.fechaDePartida"/>
+            <div class="col-md-6">
+                <span>
+                    <strong>Fecha de Partida:</strong>
+                    {{viaje.fechaDePartida | date:'dd.MM.yyyy'}}
+                </span>
             </div>
         </div>
     </form>

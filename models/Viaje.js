@@ -1,12 +1,9 @@
 var mongoose = require('mongoose');
 
 var ViajeSchema = new mongoose.Schema({
-    author: String,
+    author: {type: String, required: true},
     nombre: {type: String, required: true},
-    destino: String,
-    fechaDeArribo: {type: Date, required: true},
-    fechaDePartida: {type: Date, required: true}
-    //destinos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Destino' }]
+    translados: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Translado' }]
 });
 
 mongoose.model('Viaje', ViajeSchema);

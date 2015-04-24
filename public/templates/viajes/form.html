@@ -9,14 +9,78 @@
             <span ng-show="formElement.nombre.$error.required">
                 Campo requerido
             </span>
-            <span ng-show="formElement.path.$error.minlength">
+            <span ng-show="formElement.nombre.$error.minlength">
                 Muy corto
             </span>
         </span>
     </div>
-
 </div>
 
-<div ng-include="'/templates/datepicker.html'"></div>
+<div ng-repeat="translado in viaje.translados | orderBy:desde.fechaDeArribo">
+    <div class="row">
+        <div class="col-md-6" ng-if="$index != 0">
+            <div class="row">
+                <div class="col-md-12">
+                    <span>Desde</span>
+                </div>
+            </div>
+            <div ng-include="'/translado.html'"></div>
+        </div>
+        <div class="col-md-6" ng-if="$index != viaje.translado.length - 1">
+            <div class="row">
+                <div class="col-md-12">
+                    <span>Hasta</span>
+                </div>
+            </div>
+            <div ng-include="'/translado.html'"></div>
+        </div>
+    </div>
+</div>
 
+<!--<div ng-include="'/templates/datepicker.html'"></div>-->
 
+<script type="text/ng-template" id="/translado.html">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="ciudad">Ciudad</label>
+                <input type="text" class="form-control" autofocus="true" id="ciudad" name="ciudad"
+                       ng-model="translado.ciudad" required ng-minlength=3>
+            </div>
+                    <span class="error" ng-show="formElement.ciudad.$dirty && formElement.ciudad.$invalid">
+                        <span ng-show="formElement.ciudad.$error.required">
+                            Campo requerido
+                        </span>
+                        <span ng-show="formElement.ciudad.$error.minlength">
+                            Muy corto
+                        </span>
+                    </span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="fechaDeArribo">Fecha de arribo</label>
+                <input type="text" class="form-control" autofocus="true" id="fechaDeArribo" name="fechaDeArribo"
+                       ng-model="translado.fechaDeArribo" required>
+            </div>
+                    <span class="error" ng-show="formElement.fechaDeArribo.$dirty && formElement.fechaDeArribo.$invalid">
+                        <span ng-show="formElement.fechaDeArribo.$error.required">
+                            Campo requerido
+                        </span>
+                    </span>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="fechaDePartida">Fecha de partida</label>
+                <input type="text" class="form-control" autofocus="true" id="fechaDePartida" name="fechaDePartida"
+                       ng-model="translado.fechaDePartida" required>
+            </div>
+                    <span class="error" ng-show="formElement.fechaDePartida.$dirty && formElement.fechaDePartida.$invalid">
+                        <span ng-show="formElement.fechaDePartida.$error.required">
+                            Campo requerido
+                        </span>
+                    </span>
+        </div>
+    </div>
+</script>
