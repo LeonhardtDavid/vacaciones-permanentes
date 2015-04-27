@@ -2,8 +2,10 @@
 
 @icon-font-path: "/components/bootstrap/fonts/";
 
-body {
-    padding-top: 25px;
+html, body {
+  padding-top: 25px;
+//  height: 100%;
+//  overflow: hidden;
 }
 
 .row {
@@ -12,26 +14,31 @@ body {
 }
 
 a, .row > .pointer {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 a.navbar-brand {
-    cursor: default;
+  cursor: default;
 }
 
 .navbar-inverse .navbar-brand {
-    color: #FFFFFF;
+  color: #FFFFFF;
 }
 
 span.error {
-.label;
-.label-danger;
+  .label;
+  .label-danger;
 }
 
+//.row-striped {
+//  height: 100%;
+//  overflow: auto;
+//}
+
 .row-striped > div.row:nth-child(odd) {
-    background-color: #f9f9f9;
+  background-color: #f9f9f9;
 }
 
 .selected {
-    background-color: #30B1FF;
+  background-color: #30B1FF;
 }

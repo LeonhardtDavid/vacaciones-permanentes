@@ -16,7 +16,7 @@ app.factory('viajes', ['$http',
         };
 
         v.get = function (id) {
-            if (id == 0) return angular.copy({}, v.viaje);
+            if (id == 0) return angular.copy({translados: [{desde: {}}]}, v.viaje);
             return $http.get('/viajes/' + id)
                 .success(function (data) {
                     angular.copy(data, v.viaje);

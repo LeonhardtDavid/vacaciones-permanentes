@@ -15,8 +15,10 @@ var passport = require('passport');
 require('./models/Users');
 
 require('./models/Viaje');
-//require('./models/Destino');
-//require('./models/Ciudad');
+require('./models/Translado');
+require('./models/Destino');
+require('./models/Ciudad');
+require('./models/Hospedaje');
 
 require('./config/passport');
 

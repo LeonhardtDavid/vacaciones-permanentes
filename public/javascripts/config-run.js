@@ -53,7 +53,7 @@ app.config([
                 }
             })
             .state('viajes.edit', {
-                url: '/:id',
+                url: '/:id/edit',
                 views: {
                     "detailView@": {
                         templateUrl: "/templates/viajes/edit.html",

@@ -18,7 +18,7 @@ app.controller('ViajesCtrl', [
         };
 
         $scope.crearViaje = function () {
-            viajes.create($scope.viaje).then(goViajes);
+            viajes.create($scope.viaje);
         };
 
         $scope.actualizarViaje = function () {
@@ -47,6 +47,17 @@ app.controller('ViajesCtrl', [
 
         };
 
+    }
+]);
+
+app.controller('DestCtrl', [
+    '$scope',
+    function ($scope) {
+        $scope.destino = {};
+
+        $scope.setDestino = function (destino) {
+            $scope.destino = destino;
+        };
     }
 ]);
 
