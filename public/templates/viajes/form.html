@@ -16,159 +16,16 @@
     </div>
 </div>
 
-<div ng-repeat="translado in viaje.translados | orderBy:desde.fechaDeArribo">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="form-group input-group-sm">
-                <label for="tipo">Tipo de translado</label>
-                <input type="text" class="form-control" autofocus="true" id="tipo" name="tipo"
-                       ng-model="translado.tipo" required ng-minlength=3>
-            </div>
-            <span class="error" ng-show="formElement.tipo.$dirty && formElement.tipo.$invalid">
-                <span ng-show="formElement.tipo.$error.required">
-                    Campo requerido
-                </span>
-                <span ng-show="formElement.tipo.$error.minlength">
-                    Muy corto
-                </span>
-            </span>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6" ng-if="$index != 0">
-            <div class="row">
-                <div class="col-md-12">
-                    <span>Desde</span>
-                </div>
-            </div>
-            <div ng-include="'/destino.html'" ng-controller="DestCtrl" onload="setDestino(translado.desde)"></div>
-        </div>
-        <div class="col-md-6" ng-if="$index == 0">
-            <div ng-include="'/homeIcon.html'"></div>
-        </div>
-        <div class="col-md-6" ng-if="$index != viaje.translado.length - 1 || $index == 0">
-            <div class="row">
-                <div class="col-md-12">
-                    <span>Hasta</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group input-group-sm">
-                        <label for="ciudad">Ciudad</label>
-                        <input type="text" class="form-control" autofocus="true" id="ciudad" name="ciudad"
-                               ng-model="translado.hasta.ciudad.nombre" required ng-minlength=3>
-                    </div>
-            <span class="error" ng-show="formElement.ciudad.$dirty && formElement.ciudad.$invalid">
-                <span ng-show="formElement.ciudad.$error.required">
-                    Campo requerido
-                </span>
-                <span ng-show="formElement.ciudad.$error.minlength">
-                    Muy corto
-                </span>
-            </span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group input-group-sm">
-                        <label for="fechaDeArribo">Fecha de arribo</label>
-                        <input type="text" class="form-control" autofocus="true" id="fechaDeArribo" name="fechaDeArribo"
-                               datepicker-popup="dd.MM.yyyy" show-button-bar="false" datepicker-options="{showWeeks:false}"
-                               datepicker-append-to-body="true" is-open="opened1" ng-click="opened1 = true"
-                               placeholder="dd.mm.yyyy" ng-model="translado.hasta.fechaDeArribo" required>
-                    </div>
-            <span class="error" ng-show="formElement.fechaDeArribo.$dirty && formElement.fechaDeArribo.$invalid">
-                <span ng-show="formElement.fechaDeArribo.$error.required">
-                    Campo requerido
-                </span>
-            </span>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group input-group-sm">
-                        <label for="fechaDePartida">Fecha de partida</label>
-                        <input type="text" class="form-control" autofocus="true" id="fechaDePartida" name="fechaDePartida"
-                               datepicker-popup="dd.MM.yyyy" show-button-bar="false" datepicker-options="{showWeeks:false}"
-                               datepicker-append-to-body="true" is-open="opened2" ng-click="opened2 = true"
-                               placeholder="dd.mm.yyyy" ng-model="translado.hasta.fechaDePartida" required>
-                    </div>
-            <span class="error" ng-show="formElement.fechaDePartida.$dirty && formElement.fechaDePartida.$invalid">
-                <span ng-show="formElement.fechaDePartida.$error.required">
-                    Campo requerido
-                </span>
-            </span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group input-group-sm">
-                        <label for="hospedaje">Hospedaje</label>
-                        <input type="text" class="form-control" autofocus="true" id="hospedaje" name="hospedaje"
-                               ng-model="translado.hasta.ciudad.hospedaje.nombre" required ng-minlength=3>
-                    </div>
-            <span class="error" ng-show="formElement.hospedaje.$dirty && formElement.hospedaje.$invalid">
-                <span ng-show="formElement.hospedaje.$error.required">
-                    Campo requerido
-                </span>
-                <span ng-show="formElement.hospedaje.$error.minlength">
-                    Muy corto
-                </span>
-            </span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group input-group-sm">
-                        <label for="checkIn">Check In</label>
-                        <input type="text" class="form-control" autofocus="true" id="checkIn" name="checkIn"
-                               datepicker-popup="dd.MM.yyyy" show-button-bar="false" datepicker-options="{showWeeks:false}"
-                               datepicker-append-to-body="true" is-open="opened3" ng-click="opened3 = true"
-                               placeholder="dd.mm.yyyy" ng-model="translado.hasta.ciudad.hospedaje.checkIn" required>
-                    </div>
-            <span class="error" ng-show="formElement.checkIn.$dirty && formElement.checkIn.$invalid">
-                <span ng-show="formElement.checkIn.$error.required">
-                    Campo requerido
-                </span>
-            </span>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group input-group-sm">
-                        <label for="checkOut">Check Out</label>
-                        <input type="text" class="form-control" autofocus="true" id="checkOut" name="checkOut"
-                               datepicker-popup="dd.MM.yyyy" show-button-bar="false" datepicker-options="{showWeeks:false}"
-                               datepicker-append-to-body="true" is-open="opened4" ng-click="opened4 = true"
-                               placeholder="dd.mm.yyyy" ng-model="translado.hasta.ciudad.hospedaje.checkOut" required>
-                    </div>
-            <span class="error" ng-show="formElement.checkOut.$dirty && formElement.checkOut.$invalid">
-                <span ng-show="formElement.checkOut.$error.required">
-                    Campo requerido
-                </span>
-            </span>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6" ng-if="$index == viaje.translado.length - 1 && $index != 0">
-            <div ng-include="'/homeIcon.html'"></div>
-        </div>
-    </div>
-</div>
+<div ng-repeat="destino in viaje.destinos | orderBy:fechaDeArribo">
 
-<script type="text/ng-template" id="/homeIcon.html">
-    <div class="row">
-        <div class="col-md-12">
-            <span class="glyphicon glyphicon-home"></span>
-            <span>Casa</span>
-        </div>
-    </div>
-</script>
+    <hr>
 
-<script type="text/ng-template" id="/destino.html">
     <div class="row">
         <div class="col-md-12">
             <div class="form-group input-group-sm">
                 <label for="ciudad">Ciudad</label>
                 <input type="text" class="form-control" autofocus="true" id="ciudad" name="ciudad"
-                       ng-model="destino.ciudad.nombre" required ng-minlength=3>
+                       ng-model="destino.ciudad" required ng-minlength=3>
             </div>
             <span class="error" ng-show="formElement.ciudad.$dirty && formElement.ciudad.$invalid">
                 <span ng-show="formElement.ciudad.$error.required">
@@ -180,13 +37,39 @@
             </span>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group input-group-sm">
+                <label for="transporte_tipo">Medio de llegada</label>
+                <input type="text" class="form-control" autofocus="true" id="transporte_tipo" name="transporte_tipo"
+                       ng-model="destino.formaDeLlegada.tipo" required ng-minlength=3>
+            </div>
+            <span class="error" ng-show="formElement.transporte_tipo.$dirty && formElement.transporte_tipo.$invalid">
+                <span ng-show="formElement.transporte_tipo.$error.required">
+                    Campo requerido
+                </span>
+                <span ng-show="formElement.transporte_tipo.$error.minlength">
+                    Muy corto
+                </span>
+            </span>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group input-group-sm">
+                <label for="transporte_descripcion">Descipción</label>
+                <input type="text" class="form-control" autofocus="true" id="transporte_descripcion" name="transporte_descripcion"
+                       ng-model="destino.formaDeLlegada.descripcion">
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-6">
             <div class="form-group input-group-sm">
                 <label for="fechaDeArribo">Fecha de arribo</label>
                 <input type="text" class="form-control" autofocus="true" id="fechaDeArribo" name="fechaDeArribo"
                        datepicker-popup="dd.MM.yyyy" show-button-bar="false" datepicker-options="{showWeeks:false}"
-                       datepicker-append-to-body="true" is-open="opened1" ng-click="opened1 = true"
+                       datepicker-append-to-body="true" is-open="opened1[$index]" ng-click="opened1[$index] = true"
                        placeholder="dd.mm.yyyy" ng-model="destino.fechaDeArribo" required>
             </div>
             <span class="error" ng-show="formElement.fechaDeArribo.$dirty && formElement.fechaDeArribo.$invalid">
@@ -200,7 +83,7 @@
                 <label for="fechaDePartida">Fecha de partida</label>
                 <input type="text" class="form-control" autofocus="true" id="fechaDePartida" name="fechaDePartida"
                        datepicker-popup="dd.MM.yyyy" show-button-bar="false" datepicker-options="{showWeeks:false}"
-                       datepicker-append-to-body="true" is-open="opened2" ng-click="opened2 = true"
+                       datepicker-append-to-body="true" is-open="opened2[$index]" ng-click="opened2[$index] = true"
                        placeholder="dd.mm.yyyy" ng-model="destino.fechaDePartida" required>
             </div>
             <span class="error" ng-show="formElement.fechaDePartida.$dirty && formElement.fechaDePartida.$invalid">
@@ -210,31 +93,57 @@
             </span>
         </div>
     </div>
+
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
             <div class="form-group input-group-sm">
-                <label for="hospedaje">Hospedaje</label>
-                <input type="text" class="form-control" autofocus="true" id="hospedaje" name="hospedaje"
-                       ng-model="destino.ciudad.hospedaje.nombre" required ng-minlength=3>
+                <label for="hospedaje_nombre">Hospedaje</label>
+                <input type="text" class="form-control" autofocus="true" id="hospedaje_nombre" name="hospedaje_nombre"
+                       ng-model="destino.hospedaje.nombre" required ng-minlength=3>
             </div>
-            <span class="error" ng-show="formElement.hospedaje.$dirty && formElement.hospedaje.$invalid">
-                <span ng-show="formElement.hospedaje.$error.required">
+            <span class="error" ng-show="formElement.hospedaje_nombre.$dirty && formElement.hospedaje_nombre.$invalid">
+                <span ng-show="formElement.hospedaje_nombre.$error.required">
                     Campo requerido
                 </span>
-                <span ng-show="formElement.hospedaje.$error.minlength">
+                <span ng-show="formElement.hospedaje_nombre.$error.minlength">
                     Muy corto
                 </span>
             </span>
         </div>
+        <div class="col-md-3">
+            <div class="form-group input-group-sm">
+                <label for="logitud">Longitud</label>
+                <input type="number" step="any" class="form-control" id="logitud" name="logitud"
+                       ng-model="destino.hospedaje.coordenadass[0]" required>
+            </div>
+            <span class="error" ng-show="formElement.logitud.$dirty && formElement.logitud.$invalid">
+                <span ng-show="formElement.logitud.$error.required">
+                    Campo requerido
+                </span>
+            </span>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group input-group-sm">
+                <label for="latitud">Latitud</label>
+                <input type="number" step="any" class="form-control" id="latitud" name="latitud"
+                       ng-model="destino.hospedaje.coordenadass[1]" required>
+            </div>
+            <span class="error" ng-show="formElement.latitud.$dirty && formElement.latitud.$invalid">
+                <span ng-show="formElement.latitud.$error.required">
+                    Campo requerido
+                </span>
+            </span>
+        </div>
     </div>
+
     <div class="row">
         <div class="col-md-6">
             <div class="form-group input-group-sm">
                 <label for="checkIn">Check In</label>
                 <input type="text" class="form-control" autofocus="true" id="checkIn" name="checkIn"
                        datepicker-popup="dd.MM.yyyy" show-button-bar="false" datepicker-options="{showWeeks:false}"
-                       datepicker-append-to-body="true" is-open="opened3" ng-click="opened3 = true"
-                       placeholder="dd.mm.yyyy" ng-model="destino.ciudad.hospedaje.checkIn" required>
+                       datepicker-append-to-body="true" is-open="opened3[$index]" ng-click="opened3[$index] = true"
+                       placeholder="dd.mm.yyyy" ng-model="destino.hospedaje.checkIn" required>
             </div>
             <span class="error" ng-show="formElement.checkIn.$dirty && formElement.checkIn.$invalid">
                 <span ng-show="formElement.checkIn.$error.required">
@@ -247,8 +156,8 @@
                 <label for="checkOut">Check Out</label>
                 <input type="text" class="form-control" autofocus="true" id="checkOut" name="checkOut"
                        datepicker-popup="dd.MM.yyyy" show-button-bar="false" datepicker-options="{showWeeks:false}"
-                       datepicker-append-to-body="true" is-open="opened4" ng-click="opened4 = true"
-                       placeholder="dd.mm.yyyy" ng-model="destino.ciudad.hospedaje.checkOut" required>
+                       datepicker-append-to-body="true" is-open="opened4[$index]" ng-click="opened4[$index] = true"
+                       placeholder="dd.mm.yyyy" ng-model="destino.hospedaje.checkOut" required>
             </div>
             <span class="error" ng-show="formElement.checkOut.$dirty && formElement.checkOut.$invalid">
                 <span ng-show="formElement.checkOut.$error.required">
@@ -257,4 +166,5 @@
             </span>
         </div>
     </div>
-</script>
+
+</div>

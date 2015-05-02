@@ -5,7 +5,7 @@ var HospedajeSchema = new mongoose.Schema({
     coordenadas: {type: [Number], index: '2d'},
     checkIn: {type: Date, required: true},
     checkOut: {type: Date, required: true},
-    ciudad: {type: mongoose.Schema.Types.ObjectId, ref: 'Ciudad', required: true}
+    destino: {type: mongoose.Schema.Types.ObjectId, ref: 'Destino', required: true}
 });
 
 mongoose.model('Hospedaje', HospedajeSchema);

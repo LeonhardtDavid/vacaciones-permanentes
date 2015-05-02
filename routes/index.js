@@ -7,12 +7,15 @@ var User = mongoose.model('User');
 var Viaje = mongoose.model('Viaje');
 var Translado = mongoose.model('Translado');
 var Destino = mongoose.model('Destino');
-var Ciudad = mongoose.model('Ciudad');
 var Hospedaje = mongoose.model('Hospedaje');
 
 var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
 
 var router = express.Router();
+
+function clone(a) {
+    return JSON.parse(JSON.stringify(a));
+}
 
 var verifyAuthor = function (req, res, next) {
     var username = req.payload.username;
@@ -25,58 +28,35 @@ var verifyAuthor = function (req, res, next) {
 
 var deepFill = function (req, res, next) {
 
-    function fillDestino(bodyDestino, translado) {
-        var destino = new Destino(bodyDestino);
-        destino.translado = translado;
-
-        var bodyCiudad = bodyDestino.ciudad;
-
-        var ciudad = new Ciudad(bodyCiudad);
-        ciudad.destino = destino;
-
-        var bodyHospedaje = bodyCiudad.hospedaje;
-        var hospedaje = new Hospedaje(bodyHospedaje);
-        hospedaje.ciudad = ciudad;
-
-        return destino;
-    }
-
     var bodyViaje = req.body;
-    var translados = [];
 
-    bodyViaje.translados.forEach(function (bodyTranslado) {
-        var translado = new Translado(bodyTranslado);
+    var viaje = new Viaje(clone(bodyViaje));
 
-        var bodyDesde = bodyTranslado.desde;
-        var bodyHasta = bodyTranslado.hasta;
+    var destinos = [];
+    var translados = {};
+    var hospedajes = {};
 
-        if (bodyDesde != undefined && bodyDesde.ciudad) {
-            var desde = fillDestino(bodyDesde, translado);
-            desde.translado = translado;
-            translado.desde = desde;
-        }
+    bodyViaje.destinos.forEach(function (destinoBody) {
 
-        // TODO tratar de sacar, esto es código duplicado
-        if (bodyHasta != undefined && bodyHasta.ciudad) {
-            var hasta = fillDestino(bodyHasta, translado);
-            hasta.translado = translado;
-            translado.hasta = hasta;
-        }
+        var translado = new Translado(clone(destinoBody.formaDeLlegada));
+        var hospedaje = new Hospedaje(clone(destinoBody.hospedaje));
+        var destino = new Destino(clone(destinoBody));
+        destino.formaDeLlegada = translado;
+        destino.hospedaje = hospedaje;
 
-        // TODO desacoplar esto
-        translados.push(translado);
-    });
+        var id = destino._id;
 
-    var viaje = new Viaje(bodyViaje);
-    viaje.translados = translados;
+        translados[id] = translado;
+        hospedajes[id] = hospedaje;
 
-    // de nuevo el forEach porque da error de validación (??? porque no lo da acá?)
-    viaje.translados.forEach(function (translado) {
-        translado.viaje = viaje;
+        destinos.push(destino);
+
     });
 
     req.filledViaje = viaje;
+    req.destinos = destinos;
     req.translados = translados;
+    req.hospedajes = hospedajes;
 
     return next();
 };
@@ -151,11 +131,11 @@ router.post('/viajes', auth, deepFill, function (req, res, next) {
 
 // GET Viaje
 router.get('/viajes/:viaje', auth, verifyAuthor, function (req, res, next) {
-    req.viaje.populate('translados', function (err, viaje) {
+    req.viaje.populate('destinos', function (err, viaje) {
         if (err) return next(err);
 
         // TODO eleminar, es solo por compatibilidad con los documentos ya guardados en la db
-        if (!viaje.translados.length) viaje.translados.push({tipo: "Avión", desde: {}});
+        if (!viaje.destinos.length) viaje.destinos.push({ciudad: "???"});
 
         res.json(viaje);
     });
@@ -165,65 +145,40 @@ router.get('/viajes/:viaje', auth, verifyAuthor, function (req, res, next) {
 router.put('/viajes/:viaje', auth, verifyAuthor, deepFill, function (req, res, next) {
     var viajeDB = req.viaje;
     var filledViaje = req.filledViaje;
+    var destinos = req.destinos;
+    var translados = req.translados;
+    var hospedajes = req.hospedajes;
 
     if (viajeDB.author != filledViaje.author) return next(new Error('no es tuyo'));
 
     viajeDB.update(filledViaje.toObject(), {}, function (err, numberAffected, viaje) {
         if (err) return next(err);
 
-        req.translados.forEach(function (translado) {
-            translado.viaje = viaje;
-            translado.update(translado.toObject(), {}, function (err, numberAffected, transladoSaved) {
+        destinos.forEach(function (destino) {
+            destino.viaje = viaje;
+            destino.update(function (err, numberAffected, destinoS) {
                 if (err) return next(err);
 
-                var desde = translado.desde;
-                var hasta = translado.hasta;
+                var id = destino._id;
 
-                if (desde.ciudad) {
-                    desde.translado = transladoSaved;
-                    desde.update(desde.toObject(), {}, function (err, numberAffected, destinoSaved) {
+                var translado = translados[id];
+                translado.destino = destinoS;
+
+                translado.save(function (err, transladoS) {
+                    if (err) return next(err);
+                }).then(function (data) {
+                    var hospedaje = hospedajes[id];
+                    hospedaje.destino = destinoS;
+
+                    hospedaje.save(function (err, hospedajeS) {
                         if (err) return next(err);
 
-                        var ciudad = desde.ciudad;
-                        ciudad.destino = destinoSaved;
-                        ciudad.update(ciudad.toObject(), {}, function (err, numberAffected, ciudadSaved) {
-                            if (err) return next(err);
-
-                            var hospedaje = ciudad.hospedaje;
-                            hospedaje.ciudad = ciudadSaved;
-                            hospedaje.update(hospedaje.toObject(), {}, function (err, numberAffected, hospedajeSaved) {
-                                if (err) return next(err);
-
-                            });
-                        });
+                        res.json(viaje);
                     });
-                }
-
-                if (hasta.ciudad) {
-                    hasta.translado = transladoSaved;
-                    hasta.update(hasta.toObject(), {}, function (err, numberAffected, destinoSaved) {
-                        if (err) return next(err);
-
-                        var ciudad = hasta.ciudad;
-                        ciudad.destino = destinoSaved;
-                        ciudad.update(ciudad.toObject(), {}, function (err, numberAffected, ciudadSaved) {
-                            if (err) return next(err);
-
-                            var hospedaje = ciudad.hospedaje;
-                            hospedaje.ciudad = ciudadSaved;
-                            hospedaje.update(hospedaje.toObject(), {}, function (err, numberAffected, hospedajeSaved) {
-                                if (err) return next(err);
-
-
-                            });
-                        });
-                    });
-                }
-
-                res.json(viaje);
-
+                });
             });
         });
+
         //res.json(viaje);
     });
 });

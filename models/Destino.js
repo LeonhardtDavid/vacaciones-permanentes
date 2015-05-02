@@ -1,10 +1,12 @@
 var mongoose = require('mongoose');
 
 var DestinoSchema = new mongoose.Schema({
-    ciudad: {type: mongoose.Schema.Types.ObjectId, ref: 'Ciudad', required: true},
+    ciudad: {type: String, required: true},
     fechaDeArribo: {type: Date, required: true},
     fechaDePartida: {type: Date, required: true},
-    translado: [{type: mongoose.Schema.Types.ObjectId, ref: 'Translado'}]
+    hospedaje: {type: mongoose.Schema.Types.ObjectId, ref: 'Hospedaje'},
+    formaDeLlegada: {type: mongoose.Schema.Types.ObjectId, ref: 'Translado'},
+    viaje: {type: mongoose.Schema.Types.ObjectId, ref: 'Viaje'}
 });
 
 mongoose.model('Destino', DestinoSchema);
