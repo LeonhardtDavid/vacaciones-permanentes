@@ -48,17 +48,28 @@ app.controller('ViajesCtrl', [
 
         };
 
+        $scope.cityOptions = {
+            types: ['cities']
+        };
+
     }
 ]);
 
-app.controller('DestCtrl', [
+app.controller('HospedajeCtrl', [
     '$scope',
     function ($scope) {
-        $scope.destino = {};
 
-        $scope.setDestino = function (destino) {
-            $scope.destino = destino;
+        $scope.$on( 'g-places-autocomplete:select', function (event) {
+            $scope.$parent.destino.hospedaje = [
+                event.targetScope.model.geometry.location.lng(),
+                event.targetScope.model.geometry.location.lat()
+            ];
+        });
+
+        $scope.hotelOptions = {
+            types: ['establishment']
         };
+
     }
 ]);
 

@@ -25,7 +25,7 @@
             <div class="form-group input-group-sm">
                 <label for="ciudad">Ciudad</label>
                 <input type="text" class="form-control" autofocus="true" id="ciudad" name="ciudad"
-                       g-places-autocomplete force-selection="true"
+                       g-places-autocomplete force-selection="true" options="cityOptions"
                        ng-model="destino.ciudad" required ng-minlength=3>
             </div>
             <span class="error" ng-show="formElement.ciudad.$dirty && formElement.ciudad.$invalid">
@@ -95,11 +95,12 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-6">
+    <div class="row" ng-controller="HospedajeCtrl">
+        <div class="col-md-12">
             <div class="form-group input-group-sm">
                 <label for="hospedaje_nombre">Hospedaje</label>
                 <input type="text" class="form-control" autofocus="true" id="hospedaje_nombre" name="hospedaje_nombre"
+                       g-places-autocomplete force-selection="true" options="hotelOptions"
                        ng-model="destino.hospedaje.nombre" required ng-minlength=3>
             </div>
             <span class="error" ng-show="formElement.hospedaje_nombre.$dirty && formElement.hospedaje_nombre.$invalid">
@@ -108,30 +109,6 @@
                 </span>
                 <span ng-show="formElement.hospedaje_nombre.$error.minlength">
                     Muy corto
-                </span>
-            </span>
-        </div>
-        <div class="col-md-3">
-            <div class="form-group input-group-sm">
-                <label for="logitud">Longitud</label>
-                <input type="number" step="any" class="form-control" id="logitud" name="logitud"
-                       ng-model="destino.hospedaje.coordenadas[0]" required>
-            </div>
-            <span class="error" ng-show="formElement.logitud.$dirty && formElement.logitud.$invalid">
-                <span ng-show="formElement.logitud.$error.required">
-                    Campo requerido
-                </span>
-            </span>
-        </div>
-        <div class="col-md-3">
-            <div class="form-group input-group-sm">
-                <label for="latitud">Latitud</label>
-                <input type="number" step="any" class="form-control" id="latitud" name="latitud"
-                       ng-model="destino.hospedaje.coordenadas[1]" required>
-            </div>
-            <span class="error" ng-show="formElement.latitud.$dirty && formElement.latitud.$invalid">
-                <span ng-show="formElement.latitud.$error.required">
-                    Campo requerido
                 </span>
             </span>
         </div>
