@@ -25,6 +25,7 @@
             <div class="form-group input-group-sm">
                 <label for="ciudad">Ciudad</label>
                 <input type="text" class="form-control" autofocus="true" id="ciudad" name="ciudad"
+                       g-places-autocomplete force-selection="true"
                        ng-model="destino.ciudad" required ng-minlength=3>
             </div>
             <span class="error" ng-show="formElement.ciudad.$dirty && formElement.ciudad.$invalid">
