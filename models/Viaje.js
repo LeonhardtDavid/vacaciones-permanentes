@@ -14,4 +14,6 @@ ViajeSchema.plugin(deepPopulate, {
     ]
 });
 
+ViajeSchema.set('versionKey', false);
+
 mongoose.model('Viaje', ViajeSchema);

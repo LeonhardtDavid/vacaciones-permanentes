@@ -8,4 +8,6 @@ var HospedajeSchema = new mongoose.Schema({
     destino: {type: mongoose.Schema.Types.ObjectId, ref: 'Destino', required: true}
 });
 
+HospedajeSchema.set('versionKey', false);
+
 mongoose.model('Hospedaje', HospedajeSchema);

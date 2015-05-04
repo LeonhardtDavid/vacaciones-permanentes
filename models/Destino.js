@@ -9,4 +9,6 @@ var DestinoSchema = new mongoose.Schema({
     viaje: {type: mongoose.Schema.Types.ObjectId, ref: 'Viaje'}
 });
 
+DestinoSchema.set('versionKey', false);
+
 mongoose.model('Destino', DestinoSchema);

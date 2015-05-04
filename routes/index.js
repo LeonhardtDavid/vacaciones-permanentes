@@ -183,6 +183,8 @@ function saveOrUpdateDestino(req, res, next, destino) {
 
     destino.viaje = filledViaje;
 
+    destino.isNew = true;
+
     if (destino._id) f = destino.update;
     else             f = destino.save;
 
@@ -227,6 +229,8 @@ router.put('/viajes/:viaje', auth, verifyAuthor, deepFill, function (req, res, n
     filledViaje.isNew = false;
 
     filledViaje.save(function (err, raw) {
+        console.log("BBBBBB", err);
+
         if (err) return next(err);
 
         destinos.forEach(function (destino) {

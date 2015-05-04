@@ -48,9 +48,19 @@ app.controller('ViajesCtrl', [
 
         };
 
-        $scope.cityOptions = {
-            types: ['cities']
-        };
+    }
+]);
+
+app.controller('DestinoCtrl', [
+    '$scope',
+    function ($scope) {
+
+        $scope.$on( 'g-places-autocomplete:select', function (event, data) {
+            console.log(data);
+            $scope.destino.ciudad = data.name;
+        });
+
+        $scope.cityOptions = { types: ['(cities)'] };
 
     }
 ]);
@@ -59,16 +69,16 @@ app.controller('HospedajeCtrl', [
     '$scope',
     function ($scope) {
 
-        $scope.$on( 'g-places-autocomplete:select', function (event) {
-            $scope.$parent.destino.hospedaje = [
-                event.targetScope.model.geometry.location.lng(),
-                event.targetScope.model.geometry.location.lat()
+        $scope.$on( 'g-places-autocomplete:select', function (event, data) {
+            console.log(data);
+            $scope.destino.hospedaje.nombre = data.name;
+            $scope.destino.hospedaje.coordenadas = [
+                data.geometry.location.lng(),
+                data.geometry.location.lat()
             ];
         });
 
-        $scope.hotelOptions = {
-            types: ['establishment']
-        };
+        $scope.hotelOptions = { types: ['establishment'] };
 
     }
 ]);

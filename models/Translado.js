@@ -6,4 +6,6 @@ var TransladoSchema = new mongoose.Schema({
     destino: {type: mongoose.Schema.Types.ObjectId, ref: 'Destino'}
 });
 
+TransladoSchema.set('versionKey', false);
+
 mongoose.model('Translado', TransladoSchema);
