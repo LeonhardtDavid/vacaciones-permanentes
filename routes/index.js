@@ -160,13 +160,12 @@ router.post('/viajes', auth, deepFill, function (req, res, next) {
             });
         });
 
-        //res.json(viaje);
     });
 });
 
 // GET Viaje
 router.get('/viajes/:viaje', auth, verifyAuthor, function (req, res, next) {
-    req.viaje.populate('destinos', function (err, viaje) {
+    req.viaje.deepPopulate('destinos destinos.formaDeLlegada destinos.hospedaje', function (err, viaje) {
         if (err) return next(err);
 
         // TODO eleminar, es solo por compatibilidad con los documentos ya guardados en la db
@@ -177,15 +176,12 @@ router.get('/viajes/:viaje', auth, verifyAuthor, function (req, res, next) {
 });
 
 function saveOrUpdateDestino(req, res, next, destino) {
-    var viaje = req.viaje;
     var filledViaje = req.filledViaje;
     var destinos = req.destinos;
     var translados = req.translados;
     var hospedajes = req.hospedajes;
 
-    var f;
-
-    destino.viaje = viaje;
+    destino.viaje = filledViaje;
 
     if (destino._id) f = destino.update;
     else             f = destino.save;
@@ -208,12 +204,12 @@ function saveOrUpdateDestino(req, res, next, destino) {
                 if (err) return next(err);
 
                 for (var i = 0; i < destinos.length; i++) {
-                    viaje.destinos.push(destinos[i]._id)
+                    filledViaje.destinos.push(destinos[i]._id)
                 }
 
-                viaje.update(function(err, raw) {
+                filledViaje.save(function(err, raw) {
                     if (err) return next(err);
-                    res.json(viaje);
+                    res.json(filledViaje);
                 });
             });
         });
@@ -228,7 +224,9 @@ router.put('/viajes/:viaje', auth, verifyAuthor, deepFill, function (req, res, n
 
     if (viajeDB.author != filledViaje.author) return next(new Error('no es tuyo'));
 
-    viajeDB.update(function (err, raw) {
+    filledViaje.isNew = false;
+
+    filledViaje.save(function (err, raw) {
         if (err) return next(err);
 
         destinos.forEach(function (destino) {
