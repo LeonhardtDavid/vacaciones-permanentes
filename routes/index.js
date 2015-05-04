@@ -30,7 +30,10 @@ var deepFill = function (req, res, next) {
 
     var bodyViaje = req.body;
 
-    var viaje = new Viaje(clone(bodyViaje));
+    var cViaje = clone(bodyViaje);
+    cViaje.destinos = [];
+
+    var viaje = new Viaje(cViaje);
 
     var destinos = [];
     var translados = {};
@@ -120,12 +123,44 @@ router.get('/viajes', auth, function (req, res, next) {
 router.post('/viajes', auth, deepFill, function (req, res, next) {
     var viaje = req.filledViaje;
     viaje.author = req.payload.username;
+    var destinos = req.destinos;
+    var translados = req.translados;
+    var hospedajes = req.hospedajes;
 
     viaje.save(function (err, viaje) {
-        if (err) {
-            return next(err);
-        }
-        res.json(viaje);
+        if (err) return next(err);
+
+        destinos.forEach(function (destino) {
+            destino.viaje = viaje;
+            destino.save(function (err, destino) {
+                if (err) return next(err);
+
+                var id = destino._id;
+
+                var translado = translados[id];
+                translado.destino = destino;
+
+                translado.save(function (err, transladoS) {
+                    if (err) return next(err);
+                }).then(function (data) {
+                    var hospedaje = hospedajes[id];
+                    hospedaje.destino = destino;
+
+                    hospedaje.save(function (err, hospedajeS) {
+                        if (err) return next(err);
+
+                        viaje.destinos = destinos;
+                        viaje.update(function(err, raw) {
+                            if (err) return next(err);
+
+                            res.json(viaje);
+                        });
+                    });
+                });
+            });
+        });
+
+        //res.json(viaje);
     });
 });
 
@@ -141,42 +176,63 @@ router.get('/viajes/:viaje', auth, verifyAuthor, function (req, res, next) {
     });
 });
 
-// PUT Viaje (update)
-router.put('/viajes/:viaje', auth, verifyAuthor, deepFill, function (req, res, next) {
-    var viajeDB = req.viaje;
+function saveOrUpdateDestino(req, res, next, destino) {
+    var viaje = req.viaje;
     var filledViaje = req.filledViaje;
     var destinos = req.destinos;
     var translados = req.translados;
     var hospedajes = req.hospedajes;
 
+    var f;
+
+    destino.viaje = viaje;
+
+    if (destino._id) f = destino.update;
+    else             f = destino.save;
+
+    destino.save(function (err, raw) {
+        if (err) return next(err);
+
+        var id = destino._id;
+
+        var translado = translados[id];
+        translado.destino = destino;
+
+        translado.save(function (err, transladoS) {
+            if (err) return next(err);
+        }).then(function (data) {
+            var hospedaje = hospedajes[id];
+            hospedaje.destino = destino;
+
+            hospedaje.save(function (err, hospedajeS) {
+                if (err) return next(err);
+
+                for (var i = 0; i < destinos.length; i++) {
+                    viaje.destinos.push(destinos[i]._id)
+                }
+
+                viaje.update(function(err, raw) {
+                    if (err) return next(err);
+                    res.json(viaje);
+                });
+            });
+        });
+    });
+}
+
+// PUT Viaje (update)
+router.put('/viajes/:viaje', auth, verifyAuthor, deepFill, function (req, res, next) {
+    var viajeDB = req.viaje;
+    var filledViaje = req.filledViaje;
+    var destinos = req.destinos;
+
     if (viajeDB.author != filledViaje.author) return next(new Error('no es tuyo'));
 
-    viajeDB.update(filledViaje.toObject(), {}, function (err, numberAffected, viaje) {
+    viajeDB.update(function (err, raw) {
         if (err) return next(err);
 
         destinos.forEach(function (destino) {
-            destino.viaje = viaje;
-            destino.update(function (err, numberAffected, destinoS) {
-                if (err) return next(err);
-
-                var id = destino._id;
-
-                var translado = translados[id];
-                translado.destino = destinoS;
-
-                translado.save(function (err, transladoS) {
-                    if (err) return next(err);
-                }).then(function (data) {
-                    var hospedaje = hospedajes[id];
-                    hospedaje.destino = destinoS;
-
-                    hospedaje.save(function (err, hospedajeS) {
-                        if (err) return next(err);
-
-                        res.json(viaje);
-                    });
-                });
-            });
+            saveOrUpdateDestino(req, res, next, destino);
         });
 
         //res.json(viaje);
