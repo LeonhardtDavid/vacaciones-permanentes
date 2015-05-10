@@ -28,12 +28,15 @@ var verifyAuthor = function (req, res, next) {
 
 var deepFill = function (req, res, next) {
 
+    function isNew(item) { return item._id == null || item._id == undefined; }
+
     var bodyViaje = req.body;
 
     var cViaje = clone(bodyViaje);
     cViaje.destinos = [];
 
     var viaje = new Viaje(cViaje);
+    viaje.isNew = isNew(bodyViaje);
 
     var destinos = [];
     var translados = {};
@@ -41,9 +44,16 @@ var deepFill = function (req, res, next) {
 
     bodyViaje.destinos.forEach(function (destinoBody) {
 
-        var translado = new Translado(clone(destinoBody.formaDeLlegada));
-        var hospedaje = new Hospedaje(clone(destinoBody.hospedaje));
+        var transladoBody = destinoBody.formaDeLlegada;
+        var translado = new Translado(clone(transladoBody));
+        translado.isNew = isNew(transladoBody);
+
+        var hospedajeBody = destinoBody.hospedaje;
+        var hospedaje = new Hospedaje(clone(hospedajeBody));
+        hospedaje.isNew = isNew(hospedajeBody);
+
         var destino = new Destino(clone(destinoBody));
+        destino.isNew = isNew(destinoBody);
         destino.formaDeLlegada = translado;
         destino.hospedaje = hospedaje;
 
@@ -62,6 +72,61 @@ var deepFill = function (req, res, next) {
     req.hospedajes = hospedajes;
 
     return next();
+};
+
+var saveOrUpdateViaje = function (req, res, next) {
+    var viaje = req.filledViaje;
+    var destinos = req.destinos;
+
+    console.log("viaje isNew? " + viaje.isNew);
+
+    viaje.save(function (err, viaje) {
+        if (err) return next(err);
+
+        destinos.forEach(function (destino) {
+            saveOrUpdateDestino(req, res, next, destino, function () {
+                for (var i = 0; i < destinos.length; i++) {
+                    viaje.destinos.push(destinos[i]._id)
+                }
+
+                viaje.save(function(err, viaje) {
+                    if (err) return next(err);
+
+                    res.json(viaje);
+                });
+            });
+        });
+    });
+};
+
+var saveOrUpdateDestino = function (req, res, next, destino, callback) {
+    var viaje = req.filledViaje;
+    var translados = req.translados;
+    var hospedajes = req.hospedajes;
+
+    destino.viaje = viaje;
+
+    destino.save(function (err, destino) {
+        if (err) return next(err);
+
+        var id = destino._id;
+
+        var translado = translados[id];
+        translado.destino = destino;
+
+        translado.save(function (err, translado) {
+            if (err) return next(err);
+
+            var hospedaje = hospedajes[id];
+            hospedaje.destino = destino;
+
+            hospedaje.save(function (err, hospedaje) {
+                if (err) return next(err);
+
+                callback();
+            });
+        });
+    });
 };
 
 /* GET home page. */
@@ -121,134 +186,44 @@ router.get('/viajes', auth, function (req, res, next) {
 
 // POST Save viaje
 router.post('/viajes', auth, deepFill, function (req, res, next) {
+
     var viaje = req.filledViaje;
     viaje.author = req.payload.username;
-    var destinos = req.destinos;
-    var translados = req.translados;
-    var hospedajes = req.hospedajes;
 
-    viaje.save(function (err, viaje) {
-        if (err) return next(err);
+    return next();
 
-        destinos.forEach(function (destino) {
-            destino.viaje = viaje;
-            destino.save(function (err, destino) {
-                if (err) return next(err);
-
-                var id = destino._id;
-
-                var translado = translados[id];
-                translado.destino = destino;
-
-                translado.save(function (err, transladoS) {
-                    if (err) return next(err);
-                }).then(function (data) {
-                    var hospedaje = hospedajes[id];
-                    hospedaje.destino = destino;
-
-                    hospedaje.save(function (err, hospedajeS) {
-                        if (err) return next(err);
-
-                        viaje.destinos = destinos;
-                        viaje.update(function(err, raw) {
-                            if (err) return next(err);
-
-                            res.json(viaje);
-                        });
-                    });
-                });
-            });
-        });
-
-    });
-});
+}, saveOrUpdateViaje);
 
 // GET Viaje
 router.get('/viajes/:viaje', auth, verifyAuthor, function (req, res, next) {
     req.viaje.deepPopulate('destinos destinos.formaDeLlegada destinos.hospedaje', function (err, viaje) {
         if (err) return next(err);
 
-        // TODO eleminar, es solo por compatibilidad con los documentos ya guardados en la db
-        if (!viaje.destinos.length) viaje.destinos.push({ciudad: "???"});
+        if (!viaje.destinos.length) viaje.destinos.push({});
 
         res.json(viaje);
     });
 });
 
-function saveOrUpdateDestino(req, res, next, destino) {
-    var filledViaje = req.filledViaje;
-    var destinos = req.destinos;
-    var translados = req.translados;
-    var hospedajes = req.hospedajes;
-
-    destino.viaje = filledViaje;
-
-    destino.isNew = true;
-
-    if (destino._id) f = destino.update;
-    else             f = destino.save;
-
-    destino.save(function (err, raw) {
-        if (err) return next(err);
-
-        var id = destino._id;
-
-        var translado = translados[id];
-        translado.destino = destino;
-
-        translado.save(function (err, transladoS) {
-            if (err) return next(err);
-        }).then(function (data) {
-            var hospedaje = hospedajes[id];
-            hospedaje.destino = destino;
-
-            hospedaje.save(function (err, hospedajeS) {
-                if (err) return next(err);
-
-                for (var i = 0; i < destinos.length; i++) {
-                    filledViaje.destinos.push(destinos[i]._id)
-                }
-
-                filledViaje.save(function(err, raw) {
-                    if (err) return next(err);
-                    res.json(filledViaje);
-                });
-            });
-        });
-    });
-}
-
 // PUT Viaje (update)
 router.put('/viajes/:viaje', auth, verifyAuthor, deepFill, function (req, res, next) {
+
     var viajeDB = req.viaje;
     var filledViaje = req.filledViaje;
-    var destinos = req.destinos;
 
     if (viajeDB.author != filledViaje.author) return next(new Error('no es tuyo'));
 
-    filledViaje.isNew = false;
+    return next();
 
-    filledViaje.save(function (err, raw) {
-        console.log("BBBBBB", err);
-
-        if (err) return next(err);
-
-        destinos.forEach(function (destino) {
-            saveOrUpdateDestino(req, res, next, destino);
-        });
-
-        //res.json(viaje);
-    });
-});
+}, saveOrUpdateViaje);
 
 // DELETE Viaje (remove)
 router.delete('/viajes/:viaje', auth, verifyAuthor, function (req, res, next) {
     var viaje = req.viaje;
 
     viaje.remove(function (err) {
-        if (err) {
-            return next(err);
-        }
+        if (err) return next(err);
+
         res.json({removed: "ok"});
     });
 });
