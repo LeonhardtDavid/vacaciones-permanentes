@@ -12,19 +12,64 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-6">
-                <span>
-                    <strong>Fecha de Arribo:</strong>
-                    {{viaje.fechaDeArribo | date:'dd.MM.yyyy'}}
-                </span>
+        <div ng-repeat="destino in viaje.destinos | orderBy:fechaDeArribo">
+            <div class="row">
+                <div class="col-md-12">
+                    <span class="underline">
+                        <strong>Ciudad {{$index + 1}}:</strong>
+                        {{destino.ciudad}}
+                    </span>
+                </div>
             </div>
-
-            <div class="col-md-6">
-                <span>
-                    <strong>Fecha de Partida:</strong>
-                    {{viaje.fechaDePartida | date:'dd.MM.yyyy'}}
-                </span>
+            <div class="row">
+                <div class="col-md-6">
+                    <span>
+                        <strong>Fecha de Arribo:</strong>
+                        {{destino.fechaDeArribo | date:'dd.MM.yyyy'}}
+                    </span>
+                </div>
+                <div class="col-md-6">
+                    <span>
+                        <strong>Fecha de Partida:</strong>
+                        {{destino.fechaDePartida | date:'dd.MM.yyyy'}}
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <span>
+                        <strong>Medio de llegada:</strong>
+                        {{destino.formaDeLlegada.tipo}}
+                    </span>
+                </div>
+                <div class="col-md-6">
+                    <span>
+                        <strong>Descripción:</strong>
+                        {{destino.formaDeLlegada.descripcion}}
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <span class="underline">
+                        <strong>Hospedaje:</strong>
+                        {{destino.hospedaje.nombre}}
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <span>
+                        <strong>Check In:</strong>
+                        {{destino.hospedaje.checkIn | date:'dd.MM.yyyy HH:mm'}}
+                    </span>
+                </div>
+                <div class="col-md-6">
+                    <span>
+                        <strong>Check Out:</strong>
+                        {{destino.hospedaje.checkOut | date:'dd.MM.yyyy HH:mm'}}
+                    </span>
+                </div>
             </div>
         </div>
     </form>

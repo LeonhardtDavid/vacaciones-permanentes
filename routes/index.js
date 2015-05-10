@@ -181,9 +181,8 @@ router.post('/login', function (req, res, next) {
 router.get('/viajes', auth, function (req, res, next) {
     var username = req.payload.username;
     Viaje.find({author: username}, function (err, viajes) {
-        if (err) {
-            return next(err);
-        }
+        if (err) return next(err);
+
         res.json(viajes);
     });
 });

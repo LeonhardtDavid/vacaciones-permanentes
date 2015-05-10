@@ -1,5 +1,5 @@
-var app = angular.module('vpControllers', ['ui.router', 'ui.bootstrap', 'google.places',
-    'vpFactories', 'vpDirectives']);
+var app = angular.module('vpControllers', ['ui.router', 'ui.bootstrap', 'ui.bootstrap.datetimepicker',
+    'google.places', 'vpFactories', 'vpDirectives']);
 
 app.controller('ViajesCtrl', [
     '$scope',

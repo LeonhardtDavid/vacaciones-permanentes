@@ -118,10 +118,17 @@
         <div class="col-md-6">
             <div class="form-group input-group-sm">
                 <label for="checkIn">Check In</label>
-                <input type="text" class="form-control" autofocus="true" id="checkIn" name="checkIn"
-                       datepicker-popup="dd.MM.yyyy" show-button-bar="false" datepicker-options="{showWeeks:false}"
-                       datepicker-append-to-body="true" is-open="opened3[$index]" ng-click="opened3[$index] = true"
-                       placeholder="dd.mm.yyyy" ng-model="destino.hospedaje.checkIn" required>
+                <br>
+                <datetimepicker min-date="minDate" id="checkIn" name="checkIn"
+                                ng-model="destino.hospedaje.checkIn" date-format="dd.MM.yyyy"
+                                date-options="{startingDay: 1, showWeeks:false}"
+                                show-meridian="false" placeholder="dd.mm.yyyy" required>
+                </datetimepicker>
+
+                <!--<input type="text" class="form-control" autofocus="true" id="checkIn" name="checkIn"-->
+                       <!--datepicker-popup="dd.MM.yyyy" show-button-bar="false" datepicker-options="{showWeeks:false}"-->
+                       <!--datepicker-append-to-body="true" is-open="opened3[$index]" ng-click="opened3[$index] = true"-->
+                       <!--placeholder="dd.mm.yyyy" ng-model="destino.hospedaje.checkIn" required>-->
             </div>
             <span class="error" ng-show="formElement.checkIn.$dirty && formElement.checkIn.$invalid">
                 <span ng-show="formElement.checkIn.$error.required">
@@ -132,10 +139,17 @@
         <div class="col-md-6">
             <div class="form-group input-group-sm">
                 <label for="checkOut">Check Out</label>
-                <input type="text" class="form-control" autofocus="true" id="checkOut" name="checkOut"
-                       datepicker-popup="dd.MM.yyyy" show-button-bar="false" datepicker-options="{showWeeks:false}"
-                       datepicker-append-to-body="true" is-open="opened4[$index]" ng-click="opened4[$index] = true"
-                       placeholder="dd.mm.yyyy" ng-model="destino.hospedaje.checkOut" required>
+                <br>
+                <datetimepicker min-date="minDate" id="checkOut" name="checkOut"
+                                ng-model="destino.hospedaje.checkOut" date-format="dd.MM.yyyy"
+                                date-options="{startingDay: 1, showWeeks: false}"
+                                show-meridian="false" placeholder="dd.mm.yyyy" required>
+                </datetimepicker>
+
+                <!--<input type="text" class="form-control" id="checkOut" name="checkOut"-->
+                       <!--datepicker-popup="dd.MM.yyyy" show-button-bar="false" datepicker-options="{showWeeks:false}"-->
+                       <!--datepicker-append-to-body="true" is-open="opened4[$index]" ng-click="opened4[$index] = true"-->
+                       <!--placeholder="dd.mm.yyyy" ng-model="destino.hospedaje.checkOut" required>-->
             </div>
             <span class="error" ng-show="formElement.checkOut.$dirty && formElement.checkOut.$invalid">
                 <span ng-show="formElement.checkOut.$error.required">
