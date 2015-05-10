@@ -56,6 +56,7 @@ var deepFill = function (req, res, next) {
         destino.isNew = isNew(destinoBody);
         destino.formaDeLlegada = translado;
         destino.hospedaje = hospedaje;
+        destino.viaje = viaje;
 
         var id = destino._id;
 
@@ -83,19 +84,21 @@ var saveOrUpdateViaje = function (req, res, next) {
     viaje.save(function (err, viaje) {
         if (err) return next(err);
 
+        console.log("saved viaje");
+
         destinos.forEach(function (destino) {
-            saveOrUpdateDestino(req, res, next, destino, function () {
-                for (var i = 0; i < destinos.length; i++) {
-                    viaje.destinos.push(destinos[i]._id)
-                }
+            saveOrUpdateDestino(req, res, next, destino, function (dest) {
+                console.log("pushing destino");
+                viaje.destinos.push(dest._id);
 
                 viaje.save(function(err, viaje) {
                     if (err) return next(err);
-
-                    res.json(viaje);
+                    console.log("viaje final saved");
                 });
             });
         });
+    }).then(function (viaje) {
+        res.json(viaje);
     });
 };
 
@@ -105,8 +108,9 @@ var saveOrUpdateDestino = function (req, res, next, destino, callback) {
     var hospedajes = req.hospedajes;
 
     destino.viaje = viaje;
+    console.log("destino is new?" + destino.isNew);
 
-    destino.save(function (err, destino) {
+    return destino.save(function (err, destino) {
         if (err) return next(err);
 
         var id = destino._id;
@@ -123,7 +127,7 @@ var saveOrUpdateDestino = function (req, res, next, destino, callback) {
             hospedaje.save(function (err, hospedaje) {
                 if (err) return next(err);
 
-                callback();
+                callback(destino);
             });
         });
     });
