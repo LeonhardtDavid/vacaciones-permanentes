@@ -30,7 +30,7 @@ app.controller('ViajesCtrl', [
             viajes.remove(id).then(goViajes);
         };
 
-        $scope.open = function (id) {
+        $scope.modalEliminarViaje = function (id) {
 
             var modalInstance = $modal.open({
                 templateUrl: 'myModalContent.html',
@@ -53,7 +53,8 @@ app.controller('ViajesCtrl', [
 
 app.controller('DestinoCtrl', [
     '$scope',
-    function ($scope) {
+    '$modal',
+    function ($scope, $modal) {
 
         $scope.$on( 'g-places-autocomplete:select', function (event, data) {
             console.log(data);
@@ -61,6 +62,33 @@ app.controller('DestinoCtrl', [
         });
 
         $scope.cityOptions = { types: ['(cities)'] };
+
+        $scope.agregarDestino = function () {
+            if (!$scope.viaje.destinos) $scope.viaje.destinos = [];
+            $scope.viaje.destinos.push({});
+        };
+
+        $scope.eliminarDestino = function (index) {
+            $scope.viaje.destinos.splice(index, 1);
+        };
+
+        $scope.modalEliminarDestino = function (index) {
+
+            var modalInstance = $modal.open({
+                templateUrl: 'myModalContent.html',
+                controller: 'ModalInstanceCtrl',
+                resolve: {
+                    id: function () {
+                        return index;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (text) {
+                $scope.eliminarDestino(index);
+            });
+
+        };
 
     }
 ]);
@@ -139,37 +167,3 @@ app.controller('ModalInstanceCtrl', [
 
     }
 ]);
-
-app.controller('DatepickerDemoCtrl', function ($scope) {
-
-    $scope.today = function() {
-        $scope.dt = new Date();
-    };
-
-    $scope.clear = function () {
-        $scope.dt = null;
-    };
-
-    $scope.toggleMin = function() {
-        $scope.minDate = $scope.minDate ? null : new Date();
-    };
-    $scope.toggleMin();
-
-    $scope.dateOptions = {
-        formatYear: 'yy',
-        startingDay: 1
-    };
-
-    $scope.open = function($event, opened) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope[opened] = true;
-        //$scope.opened = true;
-    };
-
-    //$scope.dateOptions = {
-    //    formatYear: 'mm',
-    //    startingDay: 3
-    //};
-
-});

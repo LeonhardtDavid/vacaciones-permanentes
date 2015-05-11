@@ -4,11 +4,19 @@ var DestinoSchema = new mongoose.Schema({
     ciudad: {type: String, required: true},
     fechaDeArribo: {type: Date, required: true},
     fechaDePartida: {type: Date, required: true},
-    hospedaje: {type: mongoose.Schema.Types.ObjectId, ref: 'Hospedaje'},
-    formaDeLlegada: {type: mongoose.Schema.Types.ObjectId, ref: 'Translado'},
-    viaje: {type: mongoose.Schema.Types.ObjectId, ref: 'Viaje'}
+    hospedaje: {
+        nombre: {type: String, required: true},
+        coordenadas: {type: [Number], index: '2d'},
+        checkIn: {type: Date, required: true},
+        checkOut: {type: Date, required: true}
+    },
+    formaDeLlegada: {
+        tipo: {type: String, required: true},
+        descripcion: String
+    }
 });
 
 DestinoSchema.set('versionKey', false);
 
-mongoose.model('Destino', DestinoSchema);
+//mongoose.model('Destino', DestinoSchema);
+module.exports = DestinoSchema;
