@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/LeonhardtDavid/vacaciones-permanentes.svg)](https://travis-ci.org/LeonhardtDavid/vacaciones-permanentes)
+
 TP - Vacaciones Permanentes
 ===========================
 
