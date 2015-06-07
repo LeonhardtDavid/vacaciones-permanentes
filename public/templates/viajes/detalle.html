@@ -5,75 +5,83 @@
 </div>
 
 <div id="routes" class="well">
-    <form name="formElement" class="form">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>{{viaje.nombre}}</h3>
+        </div>
+    </div>
+
+    <div ng-repeat="destino in viaje.destinos | orderBy:fechaDeArribo">
+
+        <hr>
+
         <div class="row">
             <div class="col-md-12">
-                <h3>{{viaje.nombre}}</h3>
+                <span class="underline">
+                    <strong>Ciudad {{$index + 1}}:</strong>
+                    {{destino.ciudad}}
+                </span>
             </div>
         </div>
-
-        <div ng-repeat="destino in viaje.destinos | orderBy:fechaDeArribo">
-
-            <hr>
-
-            <div class="row">
-                <div class="col-md-12">
-                    <span class="underline">
-                        <strong>Ciudad {{$index + 1}}:</strong>
-                        {{destino.ciudad}}
-                    </span>
-                </div>
+        <div class="row">
+            <div class="col-md-6">
+                <span>
+                    <strong>Fecha de Arribo:</strong>
+                    {{destino.fechaDeArribo | date:'dd.MM.yyyy'}}
+                </span>
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <span>
-                        <strong>Fecha de Arribo:</strong>
-                        {{destino.fechaDeArribo | date:'dd.MM.yyyy'}}
-                    </span>
-                </div>
-                <div class="col-md-6">
-                    <span>
-                        <strong>Fecha de Partida:</strong>
-                        {{destino.fechaDePartida | date:'dd.MM.yyyy'}}
-                    </span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <span>
-                        <strong>Medio de llegada:</strong>
-                        {{destino.formaDeLlegada.tipo}}
-                    </span>
-                </div>
-                <div class="col-md-6">
-                    <span>
-                        <strong>Descripción:</strong>
-                        {{destino.formaDeLlegada.descripcion}}
-                    </span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <span class="underline">
-                        <strong>Hospedaje:</strong>
-                        {{destino.hospedaje.nombre}}
-                    </span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <span>
-                        <strong>Check In:</strong>
-                        {{destino.hospedaje.checkIn | date:'dd.MM.yyyy HH:mm'}}
-                    </span>
-                </div>
-                <div class="col-md-6">
-                    <span>
-                        <strong>Check Out:</strong>
-                        {{destino.hospedaje.checkOut | date:'dd.MM.yyyy HH:mm'}}
-                    </span>
-                </div>
+            <div class="col-md-6">
+                <span>
+                    <strong>Fecha de Partida:</strong>
+                    {{destino.fechaDePartida | date:'dd.MM.yyyy'}}
+                </span>
             </div>
         </div>
-    </form>
+        <div class="row">
+            <div class="col-md-6">
+                <span>
+                    <strong>Medio de llegada:</strong>
+                    {{destino.formaDeLlegada.tipo}}
+                </span>
+            </div>
+            <div class="col-md-6">
+                <span>
+                    <strong>Descripción:</strong>
+                    {{destino.formaDeLlegada.descripcion}}
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <span class="underline">
+                    <strong>Hospedaje:</strong>
+                    {{destino.hospedaje.nombre}}
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <span>
+                    <strong>Check In:</strong>
+                    {{destino.hospedaje.checkIn | date:'dd.MM.yyyy HH:mm'}}
+                </span>
+            </div>
+            <div class="col-md-6">
+                <span>
+                    <strong>Check Out:</strong>
+                    {{destino.hospedaje.checkOut | date:'dd.MM.yyyy HH:mm'}}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div ng-controller="MapsCtrl">
+        <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+            <ui-gmap-polyline idKey="$index" ng-repeat="p in path" path="p" stroke="stroke" fit="true">
+            </ui-gmap-polyline>
+            <ui-gmap-marker idKey="$index" ng-repeat="marker in markers" models="marker" coords="marker" icon="icon">
+            </ui-gmap-marker>
+        </ui-gmap-google-map>
+    </div>
+
 </div>

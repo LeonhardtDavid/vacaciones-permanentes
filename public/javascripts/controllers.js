@@ -164,3 +164,25 @@ app.controller('ModalInstanceCtrl', [
 
     }
 ]);
+
+app.controller('MapsCtrl', [
+    '$scope',
+    function ($scope) {
+        var coordenadas = $scope.viaje.destinos[0].hospedaje.coordenadas;
+        $scope.map = { center: { latitude: coordenadas[1], longitude: coordenadas[0] }, zoom: 3 };
+        $scope.markers = [];
+
+        for (var i = 0; i < $scope.viaje.destinos.length; i++) {
+            var coords = $scope.viaje.destinos[i].hospedaje.coordenadas;
+            $scope.markers.push({ latitude: coords[1],  longitude: coords[0], icon: '/images/hotel.png' });
+        }
+
+        $scope.path = [$scope.markers];
+
+        $scope.stroke = {
+            color: 'green',
+            weight: 3
+        };
+
+    }
+]);
