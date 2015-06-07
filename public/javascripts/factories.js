@@ -1,5 +1,3 @@
-var app = angular.module('vpFactories', ['ui.router', 'ui.bootstrap']);
-
 //servicio para viajes
 app.factory('viajes', ['$http',
     function ($http) {
@@ -16,7 +14,7 @@ app.factory('viajes', ['$http',
         };
 
         v.get = function (id) {
-            if (id == 0) return;
+            if (id === 0) return;
             return $http.get('/viajes/' + id)
                 .success(function (data) {
                     angular.copy(data, v.viaje);

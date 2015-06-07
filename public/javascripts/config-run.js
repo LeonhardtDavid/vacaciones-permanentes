@@ -1,5 +1,3 @@
-var app = angular.module('vpConfRun', ['ui.router', 'vpControllers', 'vpFactories']);
-
 app.config([
     '$stateProvider',
     '$urlRouterProvider',
@@ -111,7 +109,7 @@ app.run([
             var token = authToken.getToken();
             var stateName = toState.name;
 
-            if (token == null && stateName != 'login' && stateName != 'register') {
+            if (token === null && stateName != 'login' && stateName != 'register') {
                 $state.go('login');
                 event.preventDefault();
             }

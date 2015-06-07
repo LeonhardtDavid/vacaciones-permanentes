@@ -1,5 +1,3 @@
-var app = angular.module('vpDirectives', []);
-
 app.directive('vpOpen', [function () {
     return {
         link: function postLink(scope, element, attrs) {
@@ -9,5 +7,5 @@ app.directive('vpOpen', [function () {
                 element.addClass(className);
             });
         }
-    }
+    };
 }]);
