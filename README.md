@@ -11,4 +11,5 @@ Para ejecutarlo por primera vez:
 
 `npm install`  
 `bower install`  
+`grunt`  
 `npm start`
