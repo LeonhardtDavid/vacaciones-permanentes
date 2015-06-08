@@ -88,7 +88,12 @@ app.controller('DestinoAutocompleteCtrl', [
     function ($scope) {
 
         $scope.$on( 'g-places-autocomplete:select', function (event, data) {
+            console.log(data);
             $scope.destino.ciudad = data.name;
+            $scope.destino.coordenadas = [
+                data.geometry.location.lng(),
+                data.geometry.location.lat()
+            ];
         });
 
         $scope.cityOptions = { types: ['(cities)'] };
@@ -101,11 +106,15 @@ app.controller('HospedajeAutocompleteCtrl', [
     function ($scope) {
 
         $scope.$on( 'g-places-autocomplete:select', function (event, data) {
+            console.log(data);
             $scope.destino.hospedaje.nombre = data.name;
             $scope.destino.hospedaje.coordenadas = [
                 data.geometry.location.lng(),
                 data.geometry.location.lat()
             ];
+            $scope.destino.hospedaje.direccion = data.formatted_address;
+            $scope.destino.hospedaje.telefono = data.formatted_phone_number;
+            $scope.destino.hospedaje.icono = data.icon;
         });
 
         $scope.hotelOptions = { types: ['establishment'] };
@@ -173,16 +182,26 @@ app.controller('ModalInstanceCtrl', [
 app.controller('MapsCtrl', [
     '$scope',
     function ($scope) {
-        var coordenadas = $scope.viaje.destinos[0].hospedaje.coordenadas;
+        var coordenadas = $scope.viaje.destinos[0].coordenadas;
         $scope.map = { center: { latitude: coordenadas[1], longitude: coordenadas[0] }, zoom: 3 };
-        $scope.markers = [];
+        $scope.hospedajesCoor = [];
+        $scope.destinosCoor = [];
 
         for (var i = 0; i < $scope.viaje.destinos.length; i++) {
-            var coords = $scope.viaje.destinos[i].hospedaje.coordenadas;
-            $scope.markers.push({ latitude: coords[1],  longitude: coords[0], icon: '/images/hotel.png' });
+            var destino = $scope.viaje.destinos[i];
+            var hospedaje = destino.hospedaje;
+            var coords = hospedaje.coordenadas;
+
+            $scope.hospedajesCoor.push({
+                coords: { latitude: coords[1], longitude: coords[0] },
+                options: { icon: hospedaje.icono }
+            });
+
+            coords = destino.coordenadas;
+            $scope.destinosCoor.push({ latitude: coords[1],  longitude: coords[0] });
         }
 
-        $scope.path = [$scope.markers];
+        $scope.path = [$scope.destinosCoor];
 
         $scope.stroke = {
             color: 'green',

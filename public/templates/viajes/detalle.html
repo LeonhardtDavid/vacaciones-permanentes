@@ -60,6 +60,22 @@
             </div>
         </div>
         <div class="row">
+            <div class="col-md-12">
+                <span class="underline">
+                    <strong>Dirección:</strong>
+                    {{destino.hospedaje.direccion}}
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <span class="underline">
+                    <strong>Teléfono:</strong>
+                    {{destino.hospedaje.telefono}}
+                </span>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-md-6">
                 <span>
                     <strong>Check In:</strong>
@@ -79,7 +95,7 @@
         <ui-gmap-google-map center='map.center' zoom='map.zoom'>
             <ui-gmap-polyline idKey="$index" ng-repeat="p in path" path="p" stroke="stroke" fit="true">
             </ui-gmap-polyline>
-            <ui-gmap-marker idKey="$index" ng-repeat="marker in markers" models="marker" coords="marker" icon="icon">
+            <ui-gmap-marker idKey="$index" ng-repeat="marker in hospedajesCoor" coords="marker.coords" options="marker.options">
             </ui-gmap-marker>
         </ui-gmap-google-map>
     </div>
