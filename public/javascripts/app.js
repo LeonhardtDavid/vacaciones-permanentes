@@ -177,13 +177,6 @@ app.controller('DestinoCtrl', [
     '$modal',
     function ($scope, $modal) {
 
-        $scope.$on( 'g-places-autocomplete:select', function (event, data) {
-            console.log(data);
-            $scope.destino.ciudad = data.name;
-        });
-
-        $scope.cityOptions = { types: ['(cities)'] };
-
         $scope.agregarDestino = function () {
             if (!$scope.viaje.destinos) $scope.viaje.destinos = [];
             $scope.viaje.destinos.push({});
@@ -214,12 +207,24 @@ app.controller('DestinoCtrl', [
     }
 ]);
 
-app.controller('HospedajeCtrl', [
+app.controller('DestinoAutocompleteCtrl', [
     '$scope',
     function ($scope) {
 
         $scope.$on( 'g-places-autocomplete:select', function (event, data) {
-            console.log(data);
+            $scope.destino.ciudad = data.name;
+        });
+
+        $scope.cityOptions = { types: ['(cities)'] };
+
+    }
+]);
+
+app.controller('HospedajeAutocompleteCtrl', [
+    '$scope',
+    function ($scope) {
+
+        $scope.$on( 'g-places-autocomplete:select', function (event, data) {
             $scope.destino.hospedaje.nombre = data.name;
             $scope.destino.hospedaje.coordenadas = [
                 data.geometry.location.lng(),
