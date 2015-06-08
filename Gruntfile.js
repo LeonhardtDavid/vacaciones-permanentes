@@ -15,11 +15,11 @@ module.exports = function (grunt) {
                 src: ['views/*.ejs']
             },
             options: {
-                ignorePath: "..",
+                ignorePath: "../public",
                 exclude: [
-                    'bower_components/bootstrap/',
-                    'bower_components/angular-google-places-autocomplete/dist/autocomplete.min.js',
-                    'bower_components/angular-google-places-autocomplete/dist/autocomplete.min.css'
+                    'public/lib/bootstrap/',
+                    'public/lib/angular-google-places-autocomplete/dist/autocomplete.min.js',
+                    'public/lib/angular-google-places-autocomplete/dist/autocomplete.min.css'
                 ]
             }
         },

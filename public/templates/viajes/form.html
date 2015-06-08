@@ -30,13 +30,12 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" ng-controller="DestinoAutocompleteCtrl">
             <div class="col-md-12">
                 <div class="form-group input-group-sm">
                     <label for="ciudad">Ciudad</label>
                     <input type="text" class="form-control" autofocus="true" id="ciudad" name="ciudad"
-                           g-places-autocomplete force-selection="true"
-                           ng-model="destino.ciudad" ng-required ng-minlength=3>
+                           g-places-autocomplete ng-model="destino.ciudad" ng-required ng-minlength=3>
                 </div>
                 <span class="error" ng-show="formElement.ciudad.$dirty && formElement.ciudad.$invalid">
                     <span ng-show="formElement.ciudad.$error.required">
@@ -105,13 +104,12 @@
             </div>
         </div>
 
-        <div class="row" ng-controller="HospedajeCtrl">
+        <div class="row" ng-controller="HospedajeAutocompleteCtrl">
             <div class="col-md-12">
                 <div class="form-group input-group-sm">
                     <label for="hospedaje_nombre">Hospedaje</label>
                     <input type="text" class="form-control" autofocus="true" id="hospedaje_nombre" name="hospedaje_nombre"
-                           g-places-autocomplete force-selection="true"
-                           ng-model="destino.hospedaje.nombre" ng-required ng-minlength=3>
+                           g-places-autocomplete ng-model="destino.hospedaje.nombre" ng-required ng-minlength=3>
                 </div>
                 <span class="error" ng-show="formElement.hospedaje_nombre.$dirty && formElement.hospedaje_nombre.$invalid">
                     <span ng-show="formElement.hospedaje_nombre.$error.required">

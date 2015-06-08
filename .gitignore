@@ -26,7 +26,7 @@ node_modules
 
 # bower
 bower_components
-.bowerrc
+/public/lib
 
 # Users Environment Variables
 .lock-wscript
