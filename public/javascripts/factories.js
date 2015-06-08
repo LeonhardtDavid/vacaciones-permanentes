@@ -14,7 +14,10 @@ app.factory('viajes', ['$http',
         };
 
         v.get = function (id) {
-            if (id === 0) return;
+            if (id === 0) {
+                angular.copy({}, v.viaje);
+                return;
+            }
             return $http.get('/viajes/' + id)
                 .success(function (data) {
                     angular.copy(data, v.viaje);
