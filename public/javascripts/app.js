@@ -317,8 +317,21 @@ app.controller('MapsCtrl', [
 
         for (var i = 0; i < $scope.viaje.destinos.length; i++) {
             var coords = $scope.viaje.destinos[i].hospedaje.coordenadas;
-            $scope.markers.push({ latitude: coords[1],  longitude: coords[0], icon: '/images/hotel.png' });
+            $scope.markers.push({
+                latitude: coords[1],
+                longitude: coords[0],
+                icon: '/images/hotel.png',
+                date: $scope.viaje.destinos[i].fechaDeArribo
+            });
         }
+
+        $scope.markers = $scope.markers.sort(function (a, b) {
+            if (a.date < b.date)
+                return -1;
+            if (a.date > b.date)
+                return 1;
+            return 0;
+        });
 
         $scope.path = [$scope.markers];
 
