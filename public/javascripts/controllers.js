@@ -186,3 +186,33 @@ app.controller('MapsCtrl', [
 
     }
 ]);
+
+app.controller('CalendarCtrl', [
+    '$scope',
+    'viajes',
+    function ($scope, viajes) {
+
+        $scope.eventSource = {
+            url: "http://www.google.com/calendar/feeds/ar__es%40holiday.calendar.google.com/public/basic",
+            className: 'gcal-event',           // an option!
+            currentTimezone: 'America/Buenos_Aires' // an option!
+        };
+
+        $scope.uiConfig = {
+            calendar:{
+                height: 450,
+                editable: true,
+                header:{
+                    left: 'title',
+                    center: '',
+                    right: 'today prev,next'
+                },
+                eventClick: $scope.alertOnEventClick,
+                eventDrop: $scope.alertOnDrop,
+                eventResize: $scope.alertOnResize,
+                eventRender: $scope.eventRender
+            }
+        };
+
+    }
+]);

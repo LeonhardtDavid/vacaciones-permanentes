@@ -1,5 +1,5 @@
 var app = angular.module('vacacionesPermanentes', ['ui.router', 'ui.bootstrap', 'ui.bootstrap.datetimepicker',
-    'google.places', 'uiGmapgoogle-maps']);
+    'google.places', 'uiGmapgoogle-maps', 'ui.calendar']);
 
 app.config([
     '$stateProvider',
@@ -59,6 +59,20 @@ app.config([
                     "detailView@": {
                         templateUrl: "/templates/viajes/edit.html",
                         controller: 'ViajesCtrl'
+                    }
+                },
+                resolve: {
+                    viajePromise: ['viajes', '$stateParams', function (viajes, $stateParams) {
+                        return viajes.get($stateParams.id);
+                    }]
+                }
+            })
+            .state('viajes.calendar', {
+                url: '/:id/calendar',
+                views: {
+                    "detailView@": {
+                        templateUrl: "/templates/viajes/calendar.html",
+                        controller: 'CalendarCtrl'
                     }
                 },
                 resolve: {
@@ -306,6 +320,36 @@ app.controller('MapsCtrl', [
         $scope.stroke = {
             color: 'green',
             weight: 3
+        };
+
+    }
+]);
+
+app.controller('CalendarCtrl', [
+    '$scope',
+    'viajes',
+    function ($scope, viajes) {
+
+        $scope.eventSource = {
+            url: "http://www.google.com/calendar/feeds/ar__es%40holiday.calendar.google.com/public/basic",
+            className: 'gcal-event',           // an option!
+            currentTimezone: 'America/Buenos_Aires' // an option!
+        };
+
+        $scope.uiConfig = {
+            calendar:{
+                height: 450,
+                editable: true,
+                header:{
+                    left: 'title',
+                    center: '',
+                    right: 'today prev,next'
+                },
+                eventClick: $scope.alertOnEventClick,
+                eventDrop: $scope.alertOnDrop,
+                eventResize: $scope.alertOnResize,
+                eventRender: $scope.eventRender
+            }
         };
 
     }

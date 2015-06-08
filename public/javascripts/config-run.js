@@ -64,6 +64,20 @@ app.config([
                     }]
                 }
             })
+            .state('viajes.calendar', {
+                url: '/:id/calendar',
+                views: {
+                    "detailView@": {
+                        templateUrl: "/templates/viajes/calendar.html",
+                        controller: 'CalendarCtrl'
+                    }
+                },
+                resolve: {
+                    viajePromise: ['viajes', '$stateParams', function (viajes, $stateParams) {
+                        return viajes.get($stateParams.id);
+                    }]
+                }
+            })
             .state('login', {
                 url: '/login',
                 views: {
