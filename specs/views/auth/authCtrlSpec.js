@@ -62,13 +62,19 @@ describe("AuthCtrl", function () {
         expect(typeof scope.logIn).toEqual('function');
     });
 
-    it("logIn call auth.logIn and set $scope.error on error", function () {
+    it("logIn call auth.logIn with user parameter", function () {
         scope.user = {username: 'david', password: 'ddd'};
         scope.logIn();
-        deferred.reject(errorMsg);
+        deferred.resolve();
         scope.$apply();
         expect(auth.logIn.calls.mostRecent().args).toEqual([scope.user]);
         expect(auth.logIn).toHaveBeenCalled();
+    });
+
+    it("logIn call auth.logIn and set $scope.error on error", function () {
+        scope.logIn();
+        deferred.reject(errorMsg);
+        scope.$apply();
         expect(scope.error).toEqual(errorMsg);
     });
 
