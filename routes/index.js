@@ -22,7 +22,7 @@ var verifyAuthor = function (req, res, next) {
 var checkNew = function (req, res, next) {
 
     var bodyViaje = req.body;
-    var isNew = bodyViaje._id == null || bodyViaje._id == undefined;
+    var isNew = bodyViaje._id === null || bodyViaje._id === undefined;
 
     var viaje = new Viaje(bodyViaje);
     viaje.isNew = isNew;
@@ -61,7 +61,7 @@ router.post('/register', function (req, res, next) {
             return next(err);
         }
 
-        return res.json({token: user.generateJWT()})
+        return res.json({token: user.generateJWT()});
     });
 });
 

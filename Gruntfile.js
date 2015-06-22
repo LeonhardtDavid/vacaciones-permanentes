@@ -35,7 +35,7 @@ module.exports = function (grunt) {
         },
 
         jshint: {
-            all: ['Gruntfile.js', 'public/javascripts/*']
+            all: ['*.js', 'public/javascripts/*', 'routes/*', 'models/*', 'config/*']
         }
 
     });
