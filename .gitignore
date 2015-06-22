@@ -36,3 +36,6 @@ bower_components
 
 # Generated css from less files
 /public/stylesheets/style*.css
+
+# Generated js
+/public/javascripts/app.js

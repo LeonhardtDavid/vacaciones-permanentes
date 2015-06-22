@@ -7,7 +7,6 @@ module.exports = function (grunt) {
                 dot: true,
                 src: [ 'public/javascripts/app.js' ]
             }
-
         },
 
         wiredep: {
