@@ -4,10 +4,8 @@ node_js:
 services:
   - mongodb
 deploy:
-  provider: openshift
-  user: $OPENSHIFT_USER
-  password: $OPENSHIFT_PASSWORD
-  domain: "dml"
+  provider: heroku
+  api_key: $HEROKU_API_KEY
   app:
-    master: "vacacionespermanentes"
-    dev: "vacacionespermanentesdev"
+    master: "vacaciones-permanentes-master"
+    dev: "vacaciones-permanentes-devel"
