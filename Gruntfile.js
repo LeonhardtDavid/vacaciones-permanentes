@@ -68,10 +68,11 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-protractor-runner');
     grunt.loadNpmTasks('grunt-wiredep');
     grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks( 'grunt-contrib-clean' );
+    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-jshint');
 
     grunt.registerTask('test', ['karma']);
-    grunt.registerTask('default', ['clean', 'jshint', 'wiredep', 'concat', 'test']);
+    grunt.registerTask('generate', ['clean', 'jshint', 'wiredep', 'concat']);
+    grunt.registerTask('default', ['generate', 'test']);
 
 };
