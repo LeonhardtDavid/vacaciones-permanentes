@@ -9,5 +9,5 @@ deploy:
   password: $OPENSHIFT_PASSWORD
   domain: "dml"
   app:
-    master: vacacionespermanentes
-    dev: vacacionespermanentesdev
+    master: "vacacionespermanentes"
+    dev: "vacacionespermanentesdev"
