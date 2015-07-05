@@ -3,8 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "postinstall": "grunt generate",
-    "start": "node ./bin/www",
+    "start": "grunt generate && node ./bin/www",
     "test": "grunt --verbose"
   },
   "dependencies": {
