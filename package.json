@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "bower install && grunt generate && node ./bin/www",
+    "start": "grunt generate && node ./bin/www",
     "test": "grunt --verbose"
   },
   "dependencies": {
@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "grunt": "^0.4.5",
+    "grunt-bower-task": "^0.4.0",
     "grunt-cli": "^0.1.13",
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-concat": "^0.5.1",

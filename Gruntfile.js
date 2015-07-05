@@ -70,9 +70,10 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-bower-task');
 
     grunt.registerTask('test', ['karma']);
-    grunt.registerTask('generate', ['clean', 'jshint', 'wiredep', 'concat']);
+    grunt.registerTask('generate', ['clean', 'bower', 'jshint', 'wiredep', 'concat']);
     grunt.registerTask('default', ['generate', 'test']);
 
 };
