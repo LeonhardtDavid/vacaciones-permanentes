@@ -21,7 +21,7 @@ require('./models/Hospedaje');
 
 require('./config/passport');
 
-mongoose.connect(process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://localhost/vacperm');
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/vacperm');
 
 var routes = require('./routes/index');
 
