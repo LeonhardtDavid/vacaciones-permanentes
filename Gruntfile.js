@@ -4,6 +4,10 @@ module.exports = function (grunt) {
 
         pkg: grunt.file.readJSON('package.json'),
 
+        bower: {
+            install: {}
+        },
+
         karma: {
             unit: {
                 configFile: 'karma.config.js'
