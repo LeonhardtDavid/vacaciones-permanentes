@@ -7,3 +7,11 @@ before_script:
   - bower install
 services:
   - mongodb
+deploy:
+  provider: openshift
+  user: $OPENSHIFT_USER
+  password: $OPENSHIFT_PASSWORD
+  domain: "dml"
+  app:
+    master: vacacionespermanentes
+    dev: vacacionespermanentesdev
