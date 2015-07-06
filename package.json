@@ -28,13 +28,13 @@
     "grunt-cli": "^0.1.13",
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-concat": "^0.5.1",
-    "grunt-contrib-jshint": "^0.11.2"
+    "grunt-contrib-jshint": "^0.11.2",
+    "grunt-wiredep": "^2.0.0"
   },
   "devDependencies": {
     "grunt-karma": "^0.11.1",
     "grunt-protractor-runner": "^2.0.0",
     "grunt-selenium-webdriver-phantom": "^1.0.4",
-    "grunt-wiredep": "^2.0.0",
     "jasmine": "^2.3.1",
     "jasmine-core": "^2.3.4",
     "jshint": "^2.8.0",
