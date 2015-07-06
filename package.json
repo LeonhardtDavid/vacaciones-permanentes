@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "postinstall": "npm install grunt-cli",
-    "start": "grunt generate && node ./bin/www",
+    "start": "grunt --force generate && node ./bin/www",
     "test": "grunt --verbose"
   },
   "dependencies": {
