@@ -25,12 +25,12 @@
     "winston": "^0.9.0",
     "grunt": "^0.4.5",
     "grunt-bower-task": "^0.4.0",
-    "grunt-cli": "^0.1.13"
-  },
-  "devDependencies": {
+    "grunt-cli": "^0.1.13",
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-concat": "^0.5.1",
-    "grunt-contrib-jshint": "^0.11.2",
+    "grunt-contrib-jshint": "^0.11.2"
+  },
+  "devDependencies": {
     "grunt-karma": "^0.11.1",
     "grunt-protractor-runner": "^2.0.0",
     "grunt-selenium-webdriver-phantom": "^1.0.4",
